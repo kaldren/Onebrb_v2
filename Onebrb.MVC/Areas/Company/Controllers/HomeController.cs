@@ -9,7 +9,7 @@ namespace Onebrb.MVC.Areas.Company.Controllers
 {
     [Area("Company")]
     [Authorize(Roles = "Company")]
-    public class CompanyController : Controller
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {
