@@ -67,9 +67,9 @@ namespace Onebrb.MVC
                     name: "Employee",
                     pattern: "{area:exists}/{controller=Employee}/{action=Index}/{id?}");
 
-                //endpoints.MapControllerRoute(
-                //    name: "Company",
-                //    pattern: "{area:exists}/{controller=Company}/{action=Home}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "Company",
+                    pattern: "{area:exists}/{controller=Company}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",
