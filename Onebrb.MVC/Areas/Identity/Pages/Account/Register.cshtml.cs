@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Utils;
 
 namespace Onebrb.MVC.Areas.Identity.Pages.Account
 {
@@ -22,12 +23,14 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -35,6 +38,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -90,10 +94,30 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var accountType = Request.Form["rblAccountType"].ToString();
+
+                // Return to the form page if the account type is invalid
+                if (RoleTypes.AllRoles.ContainsKey(accountType) == false)
+                {
+                    return Page();
+                }
+
                 var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    // Initialize the roles
+                    foreach (KeyValuePair<string, string> roles in RoleTypes.AllRoles)
+                    {
+                        if (!await _roleManager.RoleExistsAsync(roles.Key))
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(roles.Value));
+                        }
+                    }
+
+                    // The user is either Employee or Company
+                    await _userManager.AddToRoleAsync(user, accountType);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
