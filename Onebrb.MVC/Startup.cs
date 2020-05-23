@@ -64,8 +64,16 @@ namespace Onebrb.MVC
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "Employee",
+                    pattern: "{area:exists}/{controller=Employee}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Company",
+                    pattern: "{area:exists}/{controller=Company}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
