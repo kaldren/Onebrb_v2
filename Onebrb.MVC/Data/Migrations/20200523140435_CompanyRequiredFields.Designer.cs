@@ -10,8 +10,8 @@ using Onebrb.MVC.Data;
 namespace Onebrb.MVC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200523120025_CompanyModel")]
-    partial class CompanyModel
+    [Migration("20200523140435_CompanyRequiredFields")]
+    partial class CompanyRequiredFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,12 +160,14 @@ namespace Onebrb.MVC.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ManagerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")

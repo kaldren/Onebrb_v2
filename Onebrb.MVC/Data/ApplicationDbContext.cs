@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Onebrb.MVC.Areas.Company.Models;
+using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Models;
 
 namespace Onebrb.MVC.Data

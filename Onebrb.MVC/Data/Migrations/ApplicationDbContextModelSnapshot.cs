@@ -150,7 +150,7 @@ namespace Onebrb.MVC.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Onebrb.MVC.Areas.Company.Models.Company", b =>
+            modelBuilder.Entity("Onebrb.MVC.Areas.Manager.Models.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,12 +158,14 @@ namespace Onebrb.MVC.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ManagerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
@@ -298,7 +300,7 @@ namespace Onebrb.MVC.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Onebrb.MVC.Areas.Company.Models.Company", b =>
+            modelBuilder.Entity("Onebrb.MVC.Areas.Manager.Models.Company", b =>
                 {
                     b.HasOne("Onebrb.MVC.Models.ApplicationUser", "Manager")
                         .WithMany()
