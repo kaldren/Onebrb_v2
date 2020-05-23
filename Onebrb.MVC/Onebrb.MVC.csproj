@@ -15,4 +15,16 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Areas\Employee\Controllers\" />
+    <Folder Include="Areas\Employee\Data\" />
+    <Folder Include="Areas\Employee\Models\" />
+    <Folder Include="Areas\Employee\Views\" />
+    <Folder Include="Areas\Employer\Controllers\" />
+    <Folder Include="Areas\Employer\Data\" />
+    <Folder Include="Areas\Employer\Models\" />
+    <Folder Include="Areas\Employer\Views\" />
+  </ItemGroup>
+
 </Project>
