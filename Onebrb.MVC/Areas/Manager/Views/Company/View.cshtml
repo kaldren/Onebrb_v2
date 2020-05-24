@@ -1,11 +1,31 @@
-﻿@using Onebrb.MVC.Areas.Manager.Models;
-@model Company
+﻿@using Onebrb.MVC.Areas.Manager.Dtos.Company;
+@model ViewCompanyDto
 
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@Model.Name</h1>
-<p>@Model.Description</p>
+<div class="company-profile">
+    <h1>@Model.Name</h1>
+    @if (Model.IsManager)
+    {
+        // Show manager options, like edit, remove etc...
+        <div class="company-options">
+            <a class="btn btn-success" title="Edit company" asp-action="Edit" asp-route-id="@Model.Id"><i class="fas fa-edit"></i></a>
+            <a class="btn btn-warning" title="Lock company"><i class="fas fa-lock"></i></a>
+            <a class="btn btn-danger" title="Delete company" asp-action="Delete" asp-route-id="@Model.Id"><i class="fas fa-trash-alt"></i></a>
+        </div>
+    }
+    @if (string.IsNullOrWhiteSpace(Model.Url) == false)
+    {
+        <a class="company-url" href="@Model.Url" target="_blank" title="@Model.Name  website"><i class="fas fa-link"></i> @Model.Url</a>
+    }
+    else
+    {
+        <p>No website provided.</p>
+    }
+    <p class="company-description">@Model.Description</p>
+
+</div>
 

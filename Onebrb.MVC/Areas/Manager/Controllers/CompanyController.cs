@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Onebrb.MVC.Areas.Manager.Dtos.Company;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
@@ -156,7 +157,21 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(company);
+            // TODO: Automapper
+            ViewCompanyDto dto = new ViewCompanyDto();
+
+            dto.Id = company.Id;
+            dto.Name = company.Name;
+            dto.Address = company.Address;
+            dto.Url = company.Url;
+            dto.Description = company.Description;
+
+            if (company.Manager == currentUser)
+            {
+                dto.IsManager = true;
+            }
+
+            return View(dto);
         }
     }
 }
