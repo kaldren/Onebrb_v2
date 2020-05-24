@@ -157,6 +157,12 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // If the company is disabled it is only visible to its manager
+            if (company.Manager != currentUser && company.IsDisabled)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             // TODO: Automapper
             ViewCompanyDto dto = new ViewCompanyDto();
 
