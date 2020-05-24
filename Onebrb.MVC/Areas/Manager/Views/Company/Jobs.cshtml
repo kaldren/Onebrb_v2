@@ -14,9 +14,32 @@ else
 {
     <h2>All jobs by @Model[0].Company.Name</h2>
 
-    @foreach (var job in @Model)
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Job</th>
+                <th scope="col">Applicants</th>
+                <th scope="col">Posted</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < @Model.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@(i + 1)</th>
+                    <td>@Model[i].Title</td>
+                    <td>5</td>
+                    <td>27/5/2020</td>
+                </tr>
+            }
+            </tbody>
+    </table>
+
+    @*@foreach (var job in @Model)
     {
+
         <p><a asp-controller="Jobs" asp-action="View" asp-route-id="@job.Id">@job.Title</a></p>
-    }
+    }*@
 }
 
