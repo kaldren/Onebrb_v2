@@ -257,8 +257,13 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Jobs(int id)
+        public async Task<IActionResult> Jobs(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             var jobs = await _db.Jobs.Where(x => x.CompanyId == id)
                             .Include(x => x.Company)
                             .ToListAsync();
