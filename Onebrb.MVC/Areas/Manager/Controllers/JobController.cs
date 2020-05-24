@@ -5,18 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    public class JobsController : Controller
+    public class JobController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public JobsController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public JobController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _userManager = userManager;
@@ -48,6 +49,25 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             return View(job);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Create(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(new Job { Company = company, CompanyId = company.Id });
         }
     }
 }
