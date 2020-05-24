@@ -15,6 +15,18 @@ namespace Onebrb.MVC.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // One company can have many jobs and every job is owned by single company
+            builder.Entity<Job>()
+                .HasOne(c => c.Company)
+                .WithMany(j => j.Jobs)
+                .HasForeignKey(f => f.CompanyId);
+        }
+
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Job> Jobs { get; set; }
     }
 }

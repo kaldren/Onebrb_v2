@@ -19,5 +19,6 @@ namespace Onebrb.MVC.Areas.Manager.Models
         public string Description { get; set; }
         public bool IsDisabled { get; set; }
         public ApplicationUser Manager { get; set; }
+        public ICollection<Job> Jobs { get; set; }
     }
 }
