@@ -255,5 +255,20 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Jobs(int id)
+        {
+            var jobs = await _db.Jobs.Where(x => x.CompanyId == id)
+                            .Include(x => x.Company)
+                            .ToListAsync();
+
+            if (jobs == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(jobs);
+        }
     }
 }

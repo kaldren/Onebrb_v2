@@ -1,0 +1,15 @@
+﻿@using Onebrb.MVC.Areas.Manager.Models;
+@model List<Job>
+
+@{
+    ViewData["Title"] = "Jobs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>All jobs by @Model[0].Company.Name</h1>
+
+@foreach (var job in @Model)
+{
+    <p>@job.Title</p>
+}
+
