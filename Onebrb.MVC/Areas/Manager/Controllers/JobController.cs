@@ -50,15 +50,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return View(job);
         }
-        
-        [HttpGet]
-        public async Task<IActionResult> Create(int? id)
-        {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
 
+        [HttpGet]
+        public async Task<IActionResult> Create(int id)
+        {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
 
@@ -69,5 +64,39 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return View(new Job { Company = company, CompanyId = company.Id });
         }
+
+        /// <summary>
+        /// Create new job post
+        /// </summary>
+        /// <param name="job">The Job</param>
+        /// <param name="id">Company id</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm]Job job, [FromRoute] int id)
+        {
+            job.CompanyId = id;
+
+            if (ModelState.IsValid == false)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == job.CompanyId && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            job.DatePosted = DateTime.UtcNow;
+            job.Company = company;
+
+            await _db.Jobs.AddAsync(job);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
