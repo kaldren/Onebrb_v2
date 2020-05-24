@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
@@ -28,9 +29,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         {
             // Check if the user has any companies created
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            List<Company> companiesList = new List<Company>();
 
-            companiesList = _db.Companies.Where(c => c.Manager == user).ToList();
+            var companiesList = _db.Companies.Where(c => c.Manager == user).ToList();
 
             return View(companiesList);
         }
@@ -54,6 +54,40 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             return View(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+
+            if (company != null)
+            {
+                _db.Companies.Remove(company);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
