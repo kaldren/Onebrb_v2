@@ -16,7 +16,7 @@ else
 
     @foreach (var job in @Model)
     {
-        <p>@job.Title</p>
+        <p><a asp-controller="Jobs" asp-action="View" asp-route-id="@job.Id">@job.Title</a></p>
     }
 }
 

@@ -29,16 +29,25 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View();
         }
 
-        public async Task<IActionResult> View(int id)
+        /// <summary>
+        /// View individual job by id
+        /// </summary>
+        /// <param name="id">Job id</param>
+        /// <returns>Job</returns>
+        public async Task<IActionResult> View(int? id)
         {
-            var jobs = await _db.Jobs.Where(x => x.CompanyId == id).ToListAsync();
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (jobs == null)
+            if (job == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(jobs);
+            return View(job);
         }
     }
 }
