@@ -9,7 +9,7 @@
 <h1>You are about to delete @Model.Name </h1>
 
 <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-    <button class="btn btn-danger">Delete company</button>
-    <button class="btn btn-primary" asp-action="Index">Cancel</button>
+    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i> &nbsp; Delete</button>
+    <button class="btn btn-info" asp-action="Index"><i class="fas fa-window-close"></i> &nbsp; Cancel</button>
 </form>
 

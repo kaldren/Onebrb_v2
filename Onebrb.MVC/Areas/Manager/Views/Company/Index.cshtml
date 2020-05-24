@@ -6,7 +6,7 @@
 }
 
 <h1>Your companies</h1>
-<hr/>
+<hr />
 
 @if (Model == null || Model.Count() == 0)
 {
@@ -34,9 +34,10 @@ else
             {
                 <tr>
                     <th scope="row">@(i + 1)</th>
-                    <td>@Model[i].Name</td>
+                    <td><a asp-action="View" asp-route-id="@Model[i].Id">@Model[i].Name</a></td>
                     <td>@Model[i].Address</td>
                     <td>@Model[i].Url</td>
+
                     <td>
                         <a class="btn btn-success" title="Edit company" asp-action="Edit" asp-route-id="@Model[i].Id"><i class="fas fa-edit"></i></a>
                         <a class="btn btn-warning" title="Lock company"><i class="fas fa-lock"></i></a>

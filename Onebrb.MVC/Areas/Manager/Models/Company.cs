@@ -15,6 +15,8 @@ namespace Onebrb.MVC.Areas.Manager.Models
         [Required]
         public string Address { get; set; }
         public string Url { get; set; }
+        [Required]
+        public string Description { get; set; }
         public ApplicationUser Manager { get; set; }
     }
 }

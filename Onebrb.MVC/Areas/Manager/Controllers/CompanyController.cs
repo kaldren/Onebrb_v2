@@ -87,9 +87,11 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // TODO: Use Automapper
             dbCompany.Name = company.Name;
             dbCompany.Address = company.Address;
             dbCompany.Url = company.Url;
+            dbCompany.Description = company.Description;
 
             _db.Companies.Update(dbCompany);
             await _db.SaveChangesAsync();
@@ -130,6 +132,31 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        /// <summary>
+        /// View company profile
+        /// </summary>
+        /// <param name="id">Company id</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> View(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            // Company doesn't exist
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(company);
         }
     }
 }
