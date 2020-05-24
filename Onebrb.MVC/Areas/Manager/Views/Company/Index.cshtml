@@ -5,7 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Company Index</h1>
+<h1>Your companies</h1>
+<hr/>
 
 @if (Model == null || Model.Count() == 0)
 {
@@ -37,8 +38,9 @@ else
                     <td>@Model[i].Address</td>
                     <td>@Model[i].Url</td>
                     <td>
-                        <a class="btn btn-success"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model[i].Id"><i class="fas fa-trash-alt"></i></a>
+                        <a class="btn btn-success" title="Edit company" asp-action="Edit" asp-route-id="@Model[i].Id"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-warning" title="Lock company"><i class="fas fa-lock"></i></a>
+                        <a class="btn btn-danger" title="Delete company" asp-action="Delete" asp-route-id="@Model[i].Id"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
             }

@@ -1,0 +1,38 @@
+﻿@using Onebrb.MVC.Areas.Manager.Models;
+@model Company
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit @Model.Name</h1>
+
+<div class="col-lg-6">
+    <form asp-action="Edit" method="post">
+        <div class="form-group">
+            <h2>Add new company</h2>
+        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Url"></label>
+            <input asp-for="Url" class="form-control" />
+            <span asp-validation-for="Url" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> &nbsp; Save</button>
+        <button type="submit" class="btn btn-info" asp-action="Index"><i class="fas fa-window-close"></i> &nbsp; Cancel</button>
+    </form>
+</div>
+
+

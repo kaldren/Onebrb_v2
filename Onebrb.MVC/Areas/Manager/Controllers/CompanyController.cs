@@ -53,8 +53,50 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 await _db.SaveChangesAsync();
             }
 
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Company company)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var dbCompany = await _db.Companies.FirstOrDefaultAsync(x => x.Id == company.Id && x.Manager == currentUser);
+
+            if (dbCompany == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            dbCompany.Name = company.Name;
+            dbCompany.Address = company.Address;
+            dbCompany.Url = company.Url;
+
+            _db.Companies.Update(dbCompany);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+        
 
         public async Task<IActionResult> Delete(int? id)
         {
