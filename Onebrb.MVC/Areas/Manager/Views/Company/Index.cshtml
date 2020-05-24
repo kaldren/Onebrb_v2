@@ -32,7 +32,7 @@ else
         <tbody>
             @for (int i = 0; i < Model.Count(); i++)
             {
-                <tr>
+                <tr class="@(@Model[i].IsDisabled ? "company-disabled" : "company-enabled")">
                     <th scope="row">@(i + 1)</th>
                     <td><a asp-action="View" asp-route-id="@Model[i].Id">@Model[i].Name</a></td>
                     <td>@Model[i].Address</td>
@@ -40,7 +40,14 @@ else
 
                     <td>
                         <a class="btn btn-success" title="Edit company" asp-action="Edit" asp-route-id="@Model[i].Id"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-warning" title="Lock company"><i class="fas fa-lock"></i></a>
+                        @if (@Model[i].IsDisabled)
+                        {
+                            <a class="btn btn-warning" title="Enable company" asp-action="Enable" asp-route-id="@Model[i].Id"><i class="fas fa-lock-open"></i></a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-warning" title="Disable company" asp-action="Disable" asp-route-id="@Model[i].Id"><i class="fas fa-lock"></i></a>
+                        }
                         <a class="btn btn-danger" title="Delete company" asp-action="Delete" asp-route-id="@Model[i].Id"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
@@ -48,3 +55,4 @@ else
         </tbody>
     </table>
 }
+

@@ -173,5 +173,81 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return View(dto);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Disable(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Disable(int id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.IsDisabled == false && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            company.IsDisabled = true;
+            _db.Companies.Update(company);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Enable(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.IsDisabled == true && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Enable(int id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.IsDisabled == true && x.Manager == currentUser);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            company.IsDisabled = false;
+            _db.Companies.Update(company);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
