@@ -73,6 +73,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
             var job = await _db.Jobs
                             .Include(x => x.Company)
+                            .Include(x => x.Applicants)
                             .FirstOrDefaultAsync(x => x.JobId == id);
 
             if (job == null)
@@ -115,7 +116,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             job.CompanyId = id;
-            job.JobId = ShortId.Generate();
+            job.JobId = ShortId.Generate(false, false);
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == job.CompanyId && x.Manager == currentUser);
@@ -139,18 +140,45 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// </summary>
         /// <param name="id">Job id</param>
         /// <returns></returns>
-        //[Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         public async Task<IActionResult> Apply(string id)
         {
-            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == id);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var job = await _db.Jobs
+                            .Include(x => x.Company)
+                            .Include(x => x.Applicants)
+                            .FirstOrDefaultAsync(x => x.JobId == id);
 
             if (job == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            job.Applicants++;
+            // You can't apply for your own job postings
+            if (job.Company.Manager == currentUser)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var userAlreadyApplied = job.Applicants.FirstOrDefault(x => x.ApplicationUser == currentUser);
+
+            // This user already applied for this job
+            if (userAlreadyApplied != null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            job.Applicants.Add(new ApplicationUserJob
+            {
+                ApplicationUser = currentUser,
+                ApplicationUserId = currentUser.Id,
+                Job = job,
+                JobId = job.JobId
+            });
+
+            job.Applications++;
+
             _db.Jobs.Update(job);
             await _db.SaveChangesAsync();
 

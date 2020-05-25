@@ -24,6 +24,17 @@ namespace Onebrb.MVC.Data
                 .HasOne(c => c.Company)
                 .WithMany(j => j.Jobs)
                 .HasForeignKey(f => f.CompanyId);
+
+            builder.Entity<ApplicationUserJob>()
+                .HasKey(bc => new { bc.JobId, bc.ApplicationUserId });
+            builder.Entity<ApplicationUserJob>()
+                .HasOne(bc => bc.Job)
+                .WithMany(b => b.Applicants)
+                .HasForeignKey(bc => bc.JobId);
+            builder.Entity<ApplicationUserJob>()
+                .HasOne(bc => bc.ApplicationUser)
+                .WithMany(c => c.Jobs)
+                .HasForeignKey(bc => bc.ApplicationUserId);
         }
 
         public DbSet<Company> Companies { get; set; }

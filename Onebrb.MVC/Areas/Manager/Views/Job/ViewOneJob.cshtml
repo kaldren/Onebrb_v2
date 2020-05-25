@@ -1,12 +1,11 @@
 ﻿@using Onebrb.MVC.Areas.Manager.Models;
+@using System.Security.Claims;
 @model Job
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 
 <form asp-action="Apply"asp-route-id="@Model.JobId" method="post">
     <div class="card">
@@ -20,7 +19,25 @@
             <p class="card-text">
                 @Model.Description
             </p>
-            <partial name="Shared/Buttons/ButtonApplyForJob" />
+            @if (@Context.User.Identity.IsAuthenticated == false)
+            {
+                <p>Log in to apply.</p>
+            }
+            else if (@Context.User.IsInRole("Employee"))
+            {
+                // Check if this user already applied for this position
+                var applicant = @Model.Applicants.FirstOrDefault(x => x.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                // This user already applied for this job
+                if (applicant != null)
+                {
+                    <p>You already applied for this position.</p>
+                }
+                else
+                {
+                    <partial name="Shared/Buttons/ButtonApplyForJob" />
+                }
+            }
         </div>
     </div>
 </form>

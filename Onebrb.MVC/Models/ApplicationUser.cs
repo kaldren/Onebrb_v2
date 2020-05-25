@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Onebrb.MVC.Areas.Manager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Onebrb.MVC.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ICollection<ApplicationUserJob> Jobs { get; set; }
     }
 }
