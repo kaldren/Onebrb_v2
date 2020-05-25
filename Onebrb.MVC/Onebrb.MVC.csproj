@@ -23,6 +23,8 @@
     <Folder Include="Areas\Employee\Models\" />
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Views\Home\" />
+    <Folder Include="Areas\Profile\Data\" />
+    <Folder Include="Areas\Profile\Models\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,11 @@
+﻿@using Onebrb.MVC.Areas.Profile.Dtos
+@model ViewProfileDto
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.UserName</h1>
+<p>@Model.FirstName @Model.LastName</p>
+
