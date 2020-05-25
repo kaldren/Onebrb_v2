@@ -182,7 +182,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Job id</param>
         /// <returns></returns>
         [Authorize(Roles = "Employee")]
-        [HttpPost]
+        [HttpPost("id:alpha")]
         public async Task<IActionResult> Apply(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
