@@ -8,7 +8,7 @@ namespace Onebrb.MVC.Areas.Manager.Models
 {
     public class Job
     {
-        public int Id { get; set; }
+        public string JobId { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

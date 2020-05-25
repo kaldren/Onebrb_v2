@@ -37,22 +37,44 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <returns>Job</returns>
         public async Task<IActionResult> View(int? id)
         {
+            //if (id == null)
+            //{
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //var job = await _db.Jobs.FirstOrDefaultAsync(x => x.Id == id);
+
+            //if (job == null)
+            //{
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            //return View(job);
+            return View();
+        }
+
+        /// <summary>
+        /// View all jobs by company id
+        /// </summary>
+        /// <param name="id">Company id</param>
+        /// <returns>Jobs</returns>
+        public async Task<IActionResult> ViewAll(int? id)
+        {
             if (id == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.Id == id);
+            var jobs = await _db.Jobs.Where(x => x.CompanyId == id).ToListAsync();
 
-            if (job == null)
+            if (jobs == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(job);
+            return View(jobs);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create([FromRoute]int id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
