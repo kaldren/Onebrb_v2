@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if  (@Model.Company.Jobs == null)
+@if  (@Model.Company.Jobs == null || @Model.Company.Jobs.Count == 0)
 {
     <div class="alert alert-info" role="alert">
         @Model.Company.Name doesn't have any jobs posted.

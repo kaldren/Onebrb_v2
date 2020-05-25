@@ -77,10 +77,12 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create([FromRoute]int id)
+        public async Task<IActionResult> Create(int id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+            var company = await _db.Companies
+                                .Include(x => x.Jobs)
+                                .FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
 
             if (company == null)
             {
@@ -121,7 +123,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             await _db.Jobs.AddAsync(job);
             await _db.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(View), new { id });
         }
 
     }
