@@ -91,13 +91,16 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// </summary>
         /// <param name="id">Job id</param>
         /// <returns></returns>
+        /// 
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> Applicants(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
             var applicants = await _db.Jobs
-                                    .Where(x => x.JobId == id)
                                     .Include(x => x.ApplicationUserJob)
+                                    .Include(x => x.Company)
+                                    .Where(x => x.JobId == id && x.Company.Manager.Id == currentUser.Id)
                                     .FirstOrDefaultAsync();
 
             if (applicants == null)

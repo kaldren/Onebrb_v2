@@ -10,7 +10,10 @@
             @User.Identity.Name
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" asp-area="Manager" asp-controller="Company" asp-action="Index">Companies</a>
+            @if (Context.User.IsInRole("Company"))
+            {
+                <a class="dropdown-item" asp-area="Manager" asp-controller="Company" asp-action="Index">Companies</a>
+            }
             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
         </div>
     </li>
