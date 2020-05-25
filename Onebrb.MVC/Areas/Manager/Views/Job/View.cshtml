@@ -8,6 +8,9 @@
 
 <h2>@Model[0].Company.Name</h2>
 <hr/>
+<div class="form-group">
+    <partial name="Job/ButtonNewJobPost" />
+</div>
 <p>All job postings</p>
 
 <table class="table table-striped">
@@ -25,7 +28,7 @@
             <tr>
                 <th scope="row">@(i+1)</th>
                 <td>@Model[i].Title</td>
-                <td>5</td>
+                <td>@Model[i].Applicants</td>
                 <td>@Model[i].DatePosted</td>
             </tr>
         }

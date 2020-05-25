@@ -13,6 +13,7 @@ namespace Onebrb.MVC.Areas.Manager.Models
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
+        public int Applicants { get; set; }
         public DateTime DatePosted { get; set; }
         public bool IsDisabled { get; set; }
         public int CompanyId { get; set; }
