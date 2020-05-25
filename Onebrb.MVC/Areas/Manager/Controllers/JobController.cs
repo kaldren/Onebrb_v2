@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +71,9 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == id);
+            var job = await _db.Jobs
+                            .Include(x => x.Company)
+                            .FirstOrDefaultAsync(x => x.JobId == id);
 
             if (job == null)
             {
@@ -130,6 +133,28 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return RedirectToAction(nameof(View), new { id });
         }
+        
+        /// <summary>
+        /// Only employee type usersare allowed to apply for jobs
+        /// </summary>
+        /// <param name="id">Job id</param>
+        /// <returns></returns>
+        //[Authorize(Roles = "Employee")]
+        [HttpPost]
+        public async Task<IActionResult> Apply(string id)
+        {
+            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == id);
 
+            if (job == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            job.Applicants++;
+            _db.Jobs.Update(job);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
