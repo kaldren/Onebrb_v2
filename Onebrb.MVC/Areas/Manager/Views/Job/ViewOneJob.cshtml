@@ -23,10 +23,18 @@
             {
                 <p>Log in to apply.</p>
             }
+            else if (@Context.User.IsInRole("Company"))
+            {
+                // Show various options to the manager of the posting
+                if (@Model.Company.Manager.UserName == Context.User.Identity.Name)
+                {
+                    <a asp-action="Applicants" asp-route-id="@Model.JobId">See all applicants</a>
+                }
+            }
             else if (@Context.User.IsInRole("Employee"))
             {
                 // Check if this user already applied for this position
-                var applicant = @Model.Applicants.FirstOrDefault(x => x.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var applicant = @Model.ApplicationUserJob.FirstOrDefault(x => x.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 // This user already applied for this job
                 if (applicant != null)

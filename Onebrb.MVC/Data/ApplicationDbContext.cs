@@ -29,11 +29,11 @@ namespace Onebrb.MVC.Data
                 .HasKey(bc => new { bc.JobId, bc.ApplicationUserId });
             builder.Entity<ApplicationUserJob>()
                 .HasOne(bc => bc.Job)
-                .WithMany(b => b.Applicants)
+                .WithMany(b => b.ApplicationUserJob)
                 .HasForeignKey(bc => bc.JobId);
             builder.Entity<ApplicationUserJob>()
                 .HasOne(bc => bc.ApplicationUser)
-                .WithMany(c => c.Jobs)
+                .WithMany(c => c.ApplicationUserJob)
                 .HasForeignKey(bc => bc.ApplicationUserId);
         }
 

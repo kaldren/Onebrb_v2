@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Onebrb.MVC.Areas.Manager.Dtos.Job;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
@@ -73,7 +74,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
             var job = await _db.Jobs
                             .Include(x => x.Company)
-                            .Include(x => x.Applicants)
+                            .ThenInclude(x => x.Manager)
+                            .Include(x => x.ApplicationUserJob)
                             .FirstOrDefaultAsync(x => x.JobId == id);
 
             if (job == null)
@@ -82,6 +84,42 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             return View("ViewOneJob", job);
+        }
+
+        /// <summary>
+        /// View all applicants
+        /// </summary>
+        /// <param name="id">Job id</param>
+        /// <returns></returns>
+        public async Task<IActionResult> Applicants(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            var applicants = await _db.Jobs
+                                    .Where(x => x.JobId == id)
+                                    .Include(x => x.ApplicationUserJob)
+                                    .FirstOrDefaultAsync();
+
+            if (applicants == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var dto = new List<JobApplicantsListDto>();
+
+            for (int i = 0; i < applicants.ApplicationUserJob.Count; i++)
+            {
+                var userId = applicants.ApplicationUserJob.ElementAt(i).ApplicationUserId;
+                dto.Add(new JobApplicantsListDto
+                {
+                    UserId = userId,
+                    UserName = _userManager.Users.Single(x => x.Id == userId).UserName,
+                    FirstName = _userManager.Users.Single(x => x.Id == userId).FirstName,
+                    LastName = _userManager.Users.Single(x => x.Id == userId).LastName,
+                });
+            }
+
+            return View(dto);
         }
 
         [HttpGet]
@@ -147,7 +185,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var job = await _db.Jobs
                             .Include(x => x.Company)
-                            .Include(x => x.Applicants)
+                            .Include(x => x.ApplicationUserJob)
                             .FirstOrDefaultAsync(x => x.JobId == id);
 
             if (job == null)
@@ -161,7 +199,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var userAlreadyApplied = job.Applicants.FirstOrDefault(x => x.ApplicationUser == currentUser);
+            var userAlreadyApplied = job.ApplicationUserJob.FirstOrDefault(x => x.ApplicationUser == currentUser);
 
             // This user already applied for this job
             if (userAlreadyApplied != null)
@@ -169,7 +207,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            job.Applicants.Add(new ApplicationUserJob
+            job.ApplicationUserJob.Add(new ApplicationUserJob
             {
                 ApplicationUser = currentUser,
                 ApplicationUserId = currentUser.Id,

@@ -11,6 +11,6 @@ namespace Onebrb.MVC.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ICollection<ApplicationUserJob> Jobs { get; set; }
+        public virtual ICollection<ApplicationUserJob> ApplicationUserJob { get; set; }
     }
 }

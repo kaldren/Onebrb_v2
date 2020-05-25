@@ -19,6 +19,6 @@ namespace Onebrb.MVC.Areas.Manager.Models
         public bool IsDisabled { get; set; }
         public int CompanyId { get; set; }
         public Company Company { get; set; }
-        public ICollection<ApplicationUserJob> Applicants { get; set; }
+        public virtual ICollection<ApplicationUserJob> ApplicationUserJob { get; set; }
     }
 }
