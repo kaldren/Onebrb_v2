@@ -39,17 +39,17 @@ else
                     <td>@Model[i].Url</td>
 
                     <td>
-                        <a class="btn btn-success" title="Edit company" asp-action="Edit" asp-route-id="@Model[i].Id"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-info" title="Jobs" asp-area="Manager" asp-controller="Job" asp-action="View" asp-route-id="@Model[i].Id"><i class="fas fa-users"></i></a>
+                        <partial name="Shared/Buttons/ButtonEditCompany" model="@Model[i]" />
+                        <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model[i]" />
                         @if (@Model[i].IsDisabled)
                         {
-                            <a class="btn btn-warning" title="Enable company" asp-action="Enable" asp-route-id="@Model[i].Id"><i class="fas fa-lock-open"></i></a>
+                            <partial name="Shared/Buttons/ButtonEnableCompany" model="@Model[i]" />
                         }
                         else
                         {
-                            <a class="btn btn-warning" title="Disable company" asp-action="Disable" asp-route-id="@Model[i].Id"><i class="fas fa-lock"></i></a>
+                            <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model[i]" />
                         }
-                        <a class="btn btn-danger" title="Delete company" asp-action="Delete" asp-route-id="@Model[i].Id"><i class="fas fa-trash-alt"></i></a>
+                            <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model[i]" />
                     </td>
                 </tr>
             }

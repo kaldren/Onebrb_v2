@@ -103,15 +103,16 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Company id</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm]Job job, [FromRoute] int id)
         {
-            job.CompanyId = id;
-            job.JobId = ShortId.Generate();
-
             if (ModelState.IsValid == false)
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            job.CompanyId = id;
+            job.JobId = ShortId.Generate();
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == job.CompanyId && x.Manager == currentUser);

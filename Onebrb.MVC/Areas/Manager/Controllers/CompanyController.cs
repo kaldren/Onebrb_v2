@@ -81,6 +81,16 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Company company)
         {
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var dbCompany = await _db.Companies.FirstOrDefaultAsync(x => x.Id == company.Id && x.Manager == currentUser);
 
