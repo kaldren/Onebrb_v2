@@ -29,14 +29,14 @@ namespace Onebrb.MVC.Areas.Profile.Controllers
             return View();
         }
 
-        [HttpGet("{username:alpha}")]
+        [HttpGet("{username:minlength(2)}")]
         public new async Task<IActionResult> View(string username)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == username);
 
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             var dto = new ViewProfileDto
