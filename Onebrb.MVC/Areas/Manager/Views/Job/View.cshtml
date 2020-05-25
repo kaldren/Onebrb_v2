@@ -6,5 +6,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model[0].Title</h2>
+<h2>@Model[0].Company.Name</h2>
+<hr/>
+<p>All job postings</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Job</th>
+            <th scope="col">Applicants</th>
+            <th scope="col">Posted</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @Model.Count; i++)
+        {
+            <tr>
+                <th scope="row">@(i+1)</th>
+                <td>@Model[i].Title</td>
+                <td>5</td>
+                <td>@Model[i].DatePosted</td>
+            </tr>
+        }
+    </tbody>
+</table>
 

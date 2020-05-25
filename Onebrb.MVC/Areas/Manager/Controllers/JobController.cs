@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
+using shortid;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
@@ -41,7 +42,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            var jobs = await _db.Jobs.Where(x => x.CompanyId == id).ToListAsync();
+            var jobs = await _db.Jobs
+                                .Where(x => x.CompanyId == id)
+                                .Include(x => x.Company)
+                                .ToListAsync();
 
             if (jobs == null || jobs.Count == 0)
             {
@@ -96,6 +100,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         public async Task<IActionResult> Create([FromForm]Job job, [FromRoute] int id)
         {
             job.CompanyId = id;
+            job.JobId = ShortId.Generate();
 
             if (ModelState.IsValid == false)
             {
