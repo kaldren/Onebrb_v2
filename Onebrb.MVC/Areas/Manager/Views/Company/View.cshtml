@@ -1,5 +1,7 @@
-﻿@using Onebrb.MVC.Areas.Manager.Dtos.Company;
-@model ViewCompanyDto
+﻿@using Onebrb.MVC.Areas.Manager.Models;
+@using Microsoft.AspNetCore.Identity;
+
+@model Company
 
 @{
     ViewData["Title"] = "View";
@@ -8,13 +10,14 @@
 
 <div class="company-profile">
     <h1>@Model.Name</h1>
-    @if (Model.IsManager)
+    @if (Context.User.Identity.IsAuthenticated && Model.Manager.UserName == Context.User.Identity.Name)
     {
         // Show manager options, like edit, remove etc...
         <div class="company-options">
-            <a class="btn btn-success" title="Edit company" asp-action="Edit" asp-route-id="@Model.Id"><i class="fas fa-edit"></i></a>
-            <a class="btn btn-warning" title="Disable company"><i class="fas fa-lock"></i></a>
-            <a class="btn btn-danger" title="Delete company" asp-action="Delete" asp-route-id="@Model.Id"><i class="fas fa-trash-alt"></i></a>
+            <partial name="Shared/Buttons/ButtonEditCompany" model="@Model" />
+            <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model" />
+            <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
+            <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model" />
         </div>
     }
     @if (string.IsNullOrWhiteSpace(Model.Url) == false)

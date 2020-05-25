@@ -152,6 +152,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Company id</param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> View(int? id)
         {
             if (id == null)
@@ -175,20 +176,15 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             // TODO: Automapper
-            ViewCompanyDto dto = new ViewCompanyDto();
+            //ViewCompanyDto dto = new ViewCompanyDto();
 
-            dto.Id = company.Id;
-            dto.Name = company.Name;
-            dto.Address = company.Address;
-            dto.Url = company.Url;
-            dto.Description = company.Description;
+            //dto.Id = company.Id;
+            //dto.Name = company.Name;
+            //dto.Address = company.Address;
+            //dto.Url = company.Url;
+            //dto.Description = company.Description;
 
-            if (company.Manager == currentUser)
-            {
-                dto.IsManager = true;
-            }
-
-            return View(dto);
+            return View(company);
         }
 
         [HttpGet]
