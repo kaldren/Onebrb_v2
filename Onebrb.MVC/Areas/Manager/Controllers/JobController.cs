@@ -31,25 +31,24 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         }
 
         /// <summary>
-        /// View individual job by id
+        /// View all jobs by company id
         /// </summary>
-        /// <param name="id">Job id</param>
-        /// <returns>Job</returns>
+        /// <param name="id">Company id</param>
+        /// <returns>Jobs list</returns>
         public async Task<IActionResult> View(int? id)
         {
-            //if (id == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //var job = await _db.Jobs.FirstOrDefaultAsync(x => x.Id == id);
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var jobs = await _db.Jobs.Where(x => x.CompanyId == id).ToListAsync();
 
-            //if (job == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+            if (jobs == null || jobs.Count == 0)
+            {
+                return RedirectToAction(nameof(Create), new { id });
+            }
 
-            //return View(job);
-            return View();
+            return View(jobs);
         }
 
         /// <summary>

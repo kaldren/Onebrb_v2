@@ -6,6 +6,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if  (@Model.Company.Jobs == null)
+{
+    <div class="alert alert-info" role="alert">
+        @Model.Company.Name doesn't have any jobs posted.
+    </div>
+}
+
 <div class="col-lg-6">
     <form asp-action="Create" asp-route-id="@Model.CompanyId" method="post">
         <div class="form-group">

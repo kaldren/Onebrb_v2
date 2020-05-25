@@ -1,10 +1,10 @@
 ﻿@using Onebrb.MVC.Areas.Manager.Models;
-@model Job
+@model List<Job>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Title</h2>
+<h2>@Model[0].Title</h2>
 
