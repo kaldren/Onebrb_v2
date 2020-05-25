@@ -36,6 +36,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// </summary>
         /// <param name="id">Company id</param>
         /// <returns>Jobs list</returns>
+        /// 
+        [HttpGet("[Controller]/View/{id:int}")]
         public async Task<IActionResult> View(int? id)
         {
             if (id == null)
@@ -56,24 +58,26 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         }
 
         /// <summary>
-        /// View all jobs by company id
+        /// View single job offer by id
         /// </summary>
-        /// <param name="id">Company id</param>
-        /// <returns>Jobs</returns>
-        public async Task<IActionResult> ViewAll(int? id)
+        /// <param name="id">Job id</param>
+        /// <returns>The job offer</returns>
+        /// 
+        [HttpGet("[Controller]/View/{id:alpha}")]
+        public new async Task<IActionResult> View(string id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            var jobs = await _db.Jobs.Where(x => x.CompanyId == id).ToListAsync();
+            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == id);
 
-            if (jobs == null)
+            if (job == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(jobs);
+            return View("ViewOneJob", job);
         }
 
         [HttpGet]

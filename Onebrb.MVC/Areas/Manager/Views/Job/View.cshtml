@@ -27,7 +27,7 @@
         {
             <tr>
                 <th scope="row">@(i+1)</th>
-                <td>@Model[i].Title</td>
+                <td><a asp-action="View" asp-route-id="@Model[i].JobId" title="View this job">@Model[i].Title</a></td>
                 <td>@Model[i].Applicants</td>
                 <td>@Model[i].DatePosted</td>
             </tr>
