@@ -16,7 +16,14 @@
         <div class="company-options">
             <partial name="Shared/Buttons/ButtonEditCompany" model="@Model" />
             <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model" />
-            <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
+            @if (@Model.IsDisabled)
+            {
+                <partial name="Shared/Buttons/ButtonEnableCompany" model="@Model" />
+            }
+            else
+            {
+                <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
+            }
             <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model" />
         </div>
     }
