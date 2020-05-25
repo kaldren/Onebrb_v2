@@ -162,7 +162,9 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id);
+            var company = await _db.Companies
+                                .Include(x => x.Jobs)
+                                .FirstOrDefaultAsync(x => x.Id == id);
 
             // Company doesn't exist
             if (company == null)
@@ -175,15 +177,6 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            // TODO: Automapper
-            //ViewCompanyDto dto = new ViewCompanyDto();
-
-            //dto.Id = company.Id;
-            //dto.Name = company.Name;
-            //dto.Address = company.Address;
-            //dto.Url = company.Url;
-            //dto.Description = company.Description;
 
             return View(company);
         }

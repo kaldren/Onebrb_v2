@@ -26,10 +26,9 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(int id)
+        [HttpGet("[Controller]")]
+        public IActionResult Index()
         {
-            //var job = 
-
             return View();
         }
 
@@ -93,6 +92,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <returns></returns>
         /// 
         [Authorize(Roles = "Company")]
+        [HttpGet("[Controller]/Applicants/{id:alpha}")]
         public async Task<IActionResult> Applicants(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -125,7 +125,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(dto);
         }
 
-        [HttpGet]
+        [HttpGet("[Controller]/Create/{id:int}")]
         public async Task<IActionResult> Create(int id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -147,7 +147,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="job">The Job</param>
         /// <param name="id">Company id</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("[Controller]/Create/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm]Job job, [FromRoute] int id)
         {
