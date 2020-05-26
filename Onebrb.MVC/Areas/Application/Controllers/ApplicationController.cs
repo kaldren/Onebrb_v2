@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ namespace Onebrb.MVC.Areas.Application.Controllers
         }
 
         [HttpGet("{id:minlength(2)}")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
