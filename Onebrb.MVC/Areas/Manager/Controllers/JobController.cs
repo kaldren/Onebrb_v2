@@ -119,6 +119,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                     UserName = _userManager.Users.Single(x => x.Id == userId).UserName,
                     FirstName = _userManager.Users.Single(x => x.Id == userId).FirstName,
                     LastName = _userManager.Users.Single(x => x.Id == userId).LastName,
+                    ApplicationId = applicants.ApplicationUserJob.ElementAt(i).ApplicationId
                 });
             }
 
@@ -182,7 +183,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Job id</param>
         /// <returns></returns>
         [Authorize(Roles = "Employee")]
-        [HttpPost("id:alpha")]
+        [HttpPost("{id:alpha}")]
         public async Task<IActionResult> Apply(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -215,7 +216,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 ApplicationUser = currentUser,
                 ApplicationUserId = currentUser.Id,
                 Job = job,
-                JobId = job.JobId
+                JobId = job.JobId,
+                ApplicationId = Guid.NewGuid()
             });
 
             job.Applications++;

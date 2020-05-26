@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Onebrb.MVC.Data;
 
 namespace Onebrb.MVC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200525202626_ApplicationId")]
+    partial class ApplicationId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,24 +150,6 @@ namespace Onebrb.MVC.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Onebrb.MVC.Areas.Application.Models.Application", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("JobId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("Onebrb.MVC.Areas.Manager.Models.Company", b =>
@@ -321,7 +305,7 @@ namespace Onebrb.MVC.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("AllApplications");
+                    b.ToTable("ApplicationUserJob");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -373,13 +357,6 @@ namespace Onebrb.MVC.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Onebrb.MVC.Areas.Application.Models.Application", b =>
-                {
-                    b.HasOne("Onebrb.MVC.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Onebrb.MVC.Areas.Manager.Models.Company", b =>

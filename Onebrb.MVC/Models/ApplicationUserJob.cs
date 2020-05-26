@@ -12,5 +12,6 @@ namespace Onebrb.MVC.Models
         public Job Job { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+        public Guid ApplicationId { get; set; }
     }
 }

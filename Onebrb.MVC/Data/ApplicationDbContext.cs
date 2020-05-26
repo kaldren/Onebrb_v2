@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Onebrb.MVC.Areas.Application.Models;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Models;
 
@@ -39,5 +40,7 @@ namespace Onebrb.MVC.Data
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationUserJob> AllApplications { get; set; }
     }
 }
