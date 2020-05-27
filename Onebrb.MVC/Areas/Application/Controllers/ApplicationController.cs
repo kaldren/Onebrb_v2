@@ -52,13 +52,13 @@ namespace Onebrb.MVC.Areas.Application.Controllers
                                     .ThenInclude(x => x.Manager)
                                     .FirstOrDefaultAsync(x => x.ApplicationId == id);
 
-            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == application.JobId);
-
             // This application doesn't exist
             if (application == null)
             {
                 return NotFound();
             }
+
+            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == application.JobId);
 
             // This job opening doesn't exist
             if (job == null)
@@ -85,7 +85,10 @@ namespace Onebrb.MVC.Areas.Application.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var application = await _db.AllApplications.FirstOrDefaultAsync(x => x.ApplicationId == id);
+            var application = await _db.AllApplications
+                                    .Include(x => x.Job.Company)
+                                    .ThenInclude(x => x.Manager)
+                                    .FirstOrDefaultAsync(x => x.ApplicationId == id);
             var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == application.JobId);
 
             // This application doesn't exist
@@ -109,7 +112,7 @@ namespace Onebrb.MVC.Areas.Application.Controllers
             _db.AllApplications.Remove(application);
             await _db.SaveChangesAsync();
 
-            return View(nameof(Index));
+            return RedirectToAction("Applicants", "Job", new { id = job.JobId });
         }
     }
 }

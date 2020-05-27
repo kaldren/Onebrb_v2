@@ -29,9 +29,9 @@
                 <td>@Model[i].LastName</td>
                 <td><a asp-controller="Profile" asp-action="View" asp-route-id="@Model[i].UserName">@Model[i].UserName</a></td>
                 <td>
-                    <a asp-controller="Profile" asp-action="View" asp-route-id="@Model[i].UserName"><i class="fas fa-user"></i></a>
+                    <a asp-controller="Profile" asp-action="View" asp-route-id="@Model[i].UserName" class="btn btn-primary" title="View profile"><i class="fas fa-user"></i></a>
                     &nbsp;
-                    <a asp-controller="Application" asp-action="Delete" asp-route-id="@Model[i].ApplicationId"><i class="fas fa-window-close"></i></a>
+                    <a asp-controller="Application" asp-action="Delete" asp-route-id="@Model[i].ApplicationId" class="btn btn-danger" title="Delete application"><i class="fas fa-window-close"></i></a>
                 </td>
             </tr>
             }
