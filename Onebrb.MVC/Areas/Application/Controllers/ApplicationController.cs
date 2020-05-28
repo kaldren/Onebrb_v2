@@ -33,10 +33,6 @@ namespace Onebrb.MVC.Areas.Application.Controllers
         [HttpGet("{id:minlength(2)}")]
         public IActionResult View(Guid id)
         {
-            //var application = _db.Jobs
-            //                    .Include(x => x.ApplicationUserJob)
-            //                    .ThenInclude(x => x.)
-
             return View();
         }
 
