@@ -6,14 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Onebrb.MVC.Areas.Application.Dtos;
+using Onebrb.MVC.Dtos.Application;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
 
-namespace Onebrb.MVC.Areas.Application.Controllers
+namespace Onebrb.MVC.Controllers
 {
-    [Area("Application")]
-    [Route("[controller]/[action]")]
     public class ApplicationController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -30,13 +28,13 @@ namespace Onebrb.MVC.Areas.Application.Controllers
             return View();
         }
 
-        [HttpGet("{id:minlength(2)}")]
+        [HttpGet]
         public IActionResult View(Guid id)
         {
             return View();
         }
 
-        [HttpGet("{id:minlength(2)}")]
+        [HttpGet]
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -78,7 +76,7 @@ namespace Onebrb.MVC.Areas.Application.Controllers
             return View(dto);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost]
         public async Task<IActionResult> DeleteApplication(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);

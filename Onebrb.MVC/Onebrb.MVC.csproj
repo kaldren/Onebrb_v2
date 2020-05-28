@@ -19,7 +19,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Application\Data\" />
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Profile\Data\" />
     <Folder Include="Areas\Profile\Models\" />

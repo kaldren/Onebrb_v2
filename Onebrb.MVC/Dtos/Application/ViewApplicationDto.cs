@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Onebrb.MVC.Areas.Application.Dtos
+namespace Onebrb.MVC.Dtos.Application
 {
     public class ViewApplicationDto
     {

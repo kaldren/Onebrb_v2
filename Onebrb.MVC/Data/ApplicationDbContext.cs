@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Onebrb.MVC.Areas.Application.Models;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Models.Application;
 
 namespace Onebrb.MVC.Data
 {

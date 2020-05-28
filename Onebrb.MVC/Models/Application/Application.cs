@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Onebrb.MVC.Areas.Application.Models
+namespace Onebrb.MVC.Models.Application
 {
     public class Application
     {
