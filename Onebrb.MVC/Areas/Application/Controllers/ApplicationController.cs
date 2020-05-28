@@ -42,7 +42,7 @@ namespace Onebrb.MVC.Areas.Application.Controllers
 
         [HttpGet("{id:minlength(2)}")]
         [Authorize(Roles = "Company")]
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var application = await _db.AllApplications
@@ -73,6 +73,7 @@ namespace Onebrb.MVC.Areas.Application.Controllers
 
             var dto = new ViewApplicationDto
             {
+                Id = application.ApplicationId,
                 FirstName = application.ApplicationUser.FirstName,
                 LastName = application.ApplicationUser.LastName,
                 UserName = application.ApplicationUser.UserName,
@@ -81,8 +82,8 @@ namespace Onebrb.MVC.Areas.Application.Controllers
             return View(dto);
         }
 
-        [HttpPost("{id:minlength(2)}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteApplication(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var application = await _db.AllApplications

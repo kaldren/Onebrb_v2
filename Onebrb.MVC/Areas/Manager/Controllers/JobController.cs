@@ -217,7 +217,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 ApplicationUserId = currentUser.Id,
                 Job = job,
                 JobId = job.JobId,
-                ApplicationId = Guid.NewGuid()
+                ApplicationId = ShortId.Generate()
             });
 
             job.Applications++;
