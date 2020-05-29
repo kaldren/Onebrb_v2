@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Onebrb.MVC.Areas.Manager.Dtos.Job;
 using Onebrb.MVC.Areas.Manager.Models;
+using Onebrb.MVC.Areas.Manager.ViewModels.Job;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
 using Onebrb.MVC.Utils;
@@ -21,11 +23,13 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public JobController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public JobController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _db = db;
             _userManager = userManager;
+            _mapper = mapper;
         }
         /// <summary>
         /// Main page
@@ -57,7 +61,9 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Create), new { id });
             }
 
-            return View(jobs);
+            var viewModel = _mapper.Map<List<Job>, List<ViewAllJobsByCompanyVM>>(jobs);
+
+            return View(viewModel);
         }
 
         /// <summary>

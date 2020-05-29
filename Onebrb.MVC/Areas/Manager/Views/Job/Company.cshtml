@@ -1,12 +1,12 @@
-﻿@using Onebrb.MVC.Areas.Manager.Models;
-@model List<Job>
+﻿@using Onebrb.MVC.Areas.Manager.ViewModels.Job;
+@model List<ViewAllJobsByCompanyVM>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model[0].Company.Name</h2>
+<h2>@Model[0].CompanyName</h2>
 <hr/>
 <div class="form-group">
     <partial name="Shared/Buttons/ButtonNewJobPost" />

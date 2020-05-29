@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Onebrb.MVC.Models;
+using AutoMapper;
 
 namespace Onebrb.MVC
 {
@@ -39,6 +40,8 @@ namespace Onebrb.MVC
             services.AddRazorPages();
 
             services.AddHttpContextAccessor();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
