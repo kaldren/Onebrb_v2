@@ -164,6 +164,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             dbCompany = _mapper.Map(company, dbCompany);
+            dbCompany.LogoFileName = uniqueFileName;
 
             _db.Companies.Update(dbCompany);
             await _db.SaveChangesAsync();
