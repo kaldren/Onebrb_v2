@@ -12,12 +12,12 @@
 
     @if (@Model.IsDisabled && @Model.IsManager == false)
     {
-        <h2>Sorry, this company is currently disabled.</h2>
+        <h2 class="alert-danger text-center text-black-50 p-2"><i class="fas fa-frown"></i> &nbsp; Sorry, this company is currently disabled.</h2>
         return;
     }
 
     <h1>@Model.Name</h1>
-    @if (Context.User.Identity.IsAuthenticated && @Model.UserName == Context.User.Identity.Name)
+    @if (@Model.IsManager)
     {
         // Show manager options, like edit, remove etc...
         <div class="company-options">
