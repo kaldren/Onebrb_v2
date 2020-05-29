@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Onebrb.MVC.Areas.Manager.Dtos.Company;
 using Onebrb.MVC.Areas.Manager.Models;
+using Onebrb.MVC.Areas.Manager.ViewModels.Company;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
 
@@ -165,6 +166,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             var company = await _db.Companies
                                 .Include(x => x.Jobs)
+                                .Include(x => x.Manager)
                                 .FirstOrDefaultAsync(x => x.Id == id);
 
             // Company doesn't exist
@@ -173,19 +175,39 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Don't show the company if disabled for not logged in users
-            if (currentUser == null && company.IsDisabled)
+            bool isManagerViewing = false;
+
+            if (currentUser != null && currentUser.UserName == company.Manager.UserName)
             {
-                return RedirectToAction(nameof(Index));
+                isManagerViewing = true;
             }
 
-            // If the company is disabled it is only visible to its manager
-            if (company.Manager != currentUser && company.IsDisabled)
+            var viewModel = new ViewCompanyByIdViewModel
             {
-                return RedirectToAction(nameof(Index));
-            }
+                Id = company.Id,
+                Address = company.Address,
+                Description = company.Description,
+                IsDisabled = company.IsDisabled,
+                JobsCount = company.Jobs.Count(),
+                Name = company.Name,
+                Url = company.Url,
+                UserName = company.Manager.UserName,
+                IsManager = isManagerViewing
+            };
 
-            return View(company);
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// Disabled company page for not-manager users
+        /// </summary>
+        /// <param name="isDisabled"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Disabled(int id)
+        {
+
+            return View();
         }
 
         [HttpGet]

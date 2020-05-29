@@ -1,4 +1,4 @@
-﻿@using Onebrb.MVC.Areas.Manager.Models;
-@model Company
+﻿@using Onebrb.MVC.Areas.Manager.ViewModels.Company;
+@model ViewCompanyByIdViewModel
 
-    <a class="btn btn-warning" title="Enable company" asp-action="Enable" asp-route-id="@Model.Id"><i class="fas fa-lock-open"></i></a>
+<a class="btn btn-warning" title="Enable company" asp-action="Enable" asp-route-id="@Model.Id"><i class="fas fa-lock-open"></i></a>

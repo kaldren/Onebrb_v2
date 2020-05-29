@@ -1,48 +1,55 @@
-﻿@using Onebrb.MVC.Areas.Manager.Models;
+﻿@using Onebrb.MVC.Areas.Manager.ViewModels.Company;
 @using Microsoft.AspNetCore.Identity;
 
-@model Company
+@model ViewCompanyByIdViewModel
 
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="company-profile">
-        <h1>@Model.Name</h1>
-        @if (Context.User.Identity.IsAuthenticated && Model.Manager.UserName == Context.User.Identity.Name)
-        {
-            // Show manager options, like edit, remove etc...
-            <div class="company-options">
-                <partial name="Shared/Buttons/ButtonEditCompany" model="@Model" />
-                <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model" />
-                @if (@Model.IsDisabled)
-                {
-                    <partial name="Shared/Buttons/ButtonEnableCompany" model="@Model" />
-                }
-                else
-                {
-                    <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
-                }
-                <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model" />
-            </div>
-        }
-        @if (string.IsNullOrWhiteSpace(Model.Url) == false)
-        {
-            <a class="company-url" href="@Model.Url" target="_blank" title="@Model.Name  website"><i class="fas fa-link"></i> @Model.Url</a>
-        }
-        else
-        {
-            <p>No website provided.</p>
-        }
-        <p class="company-description">@Model.Description</p>
-        @if (Model.Jobs != null && Model.Jobs.Count > 0)
-        {
-            <p><a asp-controller="Job" asp-action="View" asp-route-id="@Model.Id" title="See all job offers">See all @Model.Jobs.Count job openings.</a></p>
-        }
-        else
-        {
-            <p>No job offers available right now.</p>
-        }
-    </div>
+<div class="company-profile">
+
+    @if (@Model.IsDisabled && @Model.IsManager == false)
+    {
+        <h2>Sorry, this company is currently disabled.</h2>
+        return;
+    }
+
+    <h1>@Model.Name</h1>
+    @if (Context.User.Identity.IsAuthenticated && @Model.UserName == Context.User.Identity.Name)
+    {
+        // Show manager options, like edit, remove etc...
+        <div class="company-options">
+            <partial name="Shared/Buttons/ButtonEditCompany" model="@Model" />
+            <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model" />
+            @if (@Model.IsDisabled)
+            {
+                <partial name="Shared/Buttons/ButtonEnableCompany" model="@Model" />
+            }
+            else
+            {
+                <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
+            }
+            <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model" />
+        </div>
+    }
+    @if (string.IsNullOrWhiteSpace(Model.Url) == false)
+    {
+        <a class="company-url" href="@Model.Url" target="_blank" title="@Model.Name  website"><i class="fas fa-link"></i> @Model.Url</a>
+    }
+    else
+    {
+        <p>No website provided.</p>
+    }
+    <p class="company-description">@Model.Description</p>
+    @if (@Model.JobsCount > 0)
+    {
+        <p><a asp-controller="Job" asp-action="View" asp-route-id="@Model.Id" title="See all job offers">See all @Model.JobsCount job openings.</a></p>
+    }
+    else
+    {
+        <p>No job offers available right now.</p>
+    }
+</div>
 
