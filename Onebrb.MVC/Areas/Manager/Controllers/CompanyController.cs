@@ -211,18 +211,6 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(viewModel);
         }
 
-        /// <summary>
-        /// Disabled company page for not-manager users
-        /// </summary>
-        /// <param name="isDisabled"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> Disabled(int id)
-        {
-
-            return View();
-        }
-
         [HttpGet]
         public async Task<IActionResult> Disable(int? id)
         {
