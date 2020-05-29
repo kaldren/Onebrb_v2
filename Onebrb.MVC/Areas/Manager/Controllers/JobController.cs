@@ -26,7 +26,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             _db = db;
             _userManager = userManager;
         }
-
+        /// <summary>
+        /// Main page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
         {
@@ -120,6 +123,11 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(dto);
         }
 
+        /// <summary>
+        /// Create job post page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Create(int id)
         {
