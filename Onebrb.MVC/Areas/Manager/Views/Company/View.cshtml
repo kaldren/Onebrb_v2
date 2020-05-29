@@ -45,7 +45,7 @@
     <p class="company-description">@Model.Description</p>
     @if (@Model.JobsCount > 0)
     {
-        <p><a asp-controller="Job" asp-action="View" asp-route-id="@Model.Id" title="See all job offers">See all @Model.JobsCount job openings.</a></p>
+        <p><a asp-controller="Job" asp-action="Company" asp-route-id="@Model.Id" title="See all job offers">See all @Model.JobsCount job openings.</a></p>
     }
     else
     {

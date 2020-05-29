@@ -120,21 +120,21 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(dto);
         }
 
-        //[HttpGet("{id:int}")]
-        //public async Task<IActionResult> Create(int id)
-        //{
-        //    var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-        //    var company = await _db.Companies
-        //                        .Include(x => x.Jobs)
-        //                        .FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+        [HttpGet]
+        public async Task<IActionResult> Create(int id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var company = await _db.Companies
+                                .Include(x => x.Jobs)
+                                .FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
 
-        //    if (company == null)
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-        //    return View(new Job { Company = company, CompanyId = company.Id });
-        //}
+            return View(new Job { Company = company, CompanyId = company.Id });
+        }
 
         /// <summary>
         /// Create new job post
