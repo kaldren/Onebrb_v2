@@ -15,6 +15,7 @@ using shortid;
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Route("[controller]/[action]/{id?}")]
     public class JobController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -38,13 +39,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Company id</param>
         /// <returns>Jobs list</returns>
         /// 
-        [HttpGet("[Controller]/View/{id:int}")]
-        public async Task<IActionResult> View(int? id)
+        [HttpGet]
+        [ActionName("Company")]
+        public async Task<IActionResult> ViewAllJobs(int id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
             var jobs = await _db.Jobs
                                 .Where(x => x.CompanyId == id)
                                 .Include(x => x.Company)
@@ -63,14 +61,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// </summary>
         /// <param name="id">Job id</param>
         /// <returns>The job offer</returns>
-        /// 
-        [HttpGet("[Controller]/View/{id:alpha}")]
-        public new async Task<IActionResult> View(string id)
+        [HttpGet]
+        [ActionName("View")]
+        public async Task<IActionResult> ViewSingleJob(string id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
             var job = await _db.Jobs
                             .Include(x => x.Company)
                             .ThenInclude(x => x.Manager)
@@ -92,7 +86,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <returns></returns>
         /// 
         [Authorize(Roles = "Company")]
-        [HttpGet("[Controller]/Applicants/{id:alpha}")]
+        [HttpGet]
         public async Task<IActionResult> Applicants(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -126,21 +120,21 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(dto);
         }
 
-        [HttpGet("[Controller]/Create/{id:int}")]
-        public async Task<IActionResult> Create(int id)
-        {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var company = await _db.Companies
-                                .Include(x => x.Jobs)
-                                .FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
+        //[HttpGet("{id:int}")]
+        //public async Task<IActionResult> Create(int id)
+        //{
+        //    var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var company = await _db.Companies
+        //                        .Include(x => x.Jobs)
+        //                        .FirstOrDefaultAsync(x => x.Id == id && x.Manager == currentUser);
 
-            if (company == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
+        //    if (company == null)
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
 
-            return View(new Job { Company = company, CompanyId = company.Id });
-        }
+        //    return View(new Job { Company = company, CompanyId = company.Id });
+        //}
 
         /// <summary>
         /// Create new job post
@@ -148,7 +142,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="job">The Job</param>
         /// <param name="id">Company id</param>
         /// <returns></returns>
-        [HttpPost("[Controller]/Create/{id:int}")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm]Job job, [FromRoute] int id)
         {
@@ -183,7 +177,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Job id</param>
         /// <returns></returns>
         [Authorize(Roles = "Employee")]
-        [HttpPost("{id:alpha}")]
+        [HttpPost]
         public async Task<IActionResult> Apply(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);

@@ -1,0 +1,37 @@
+﻿@using Onebrb.MVC.Areas.Manager.Models;
+@model List<Job>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model[0].Company.Name</h2>
+<hr/>
+<div class="form-group">
+    <partial name="Shared/Buttons/ButtonNewJobPost" />
+</div>
+<p>All job postings</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Job</th>
+            <th scope="col">Applications</th>
+            <th scope="col">Posted</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @Model.Count; i++)
+        {
+            <tr>
+                <th scope="row">@(i+1)</th>
+                <td><a asp-action="View" asp-route-id="@Model[i].JobId" title="View this job">@Model[i].Title</a></td>
+                <td>@Model[i].Applications</td>
+                <td>@Model[i].DatePosted</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
