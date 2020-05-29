@@ -12,44 +12,49 @@
 
     @if (@Model.IsDisabled && @Model.IsManager == false)
     {
-        <h2 class="alert-danger text-center text-black-50 p-2"><i class="fas fa-frown"></i> &nbsp; Sorry, this company is currently disabled.</h2>
+        <h2 class="alert-danger text-center text-black-50 p-2"><i class="fas fa-frown fas--space-right"></i> Sorry, this company is currently disabled.</h2>
         return;
     }
 
-    <h1>@Model.Name</h1>
-    @if (@Model.IsManager)
-    {
-        // Show manager options, like edit, remove etc...
-        <div class="company-options">
-            <partial name="Shared/Buttons/ButtonEditCompany" model="@Model" />
-            <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model" />
-            @if (@Model.IsDisabled)
-            {
-                <partial name="Shared/Buttons/ButtonEnableCompany" model="@Model" />
-            }
-            else
-            {
-                <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
-            }
-            <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model" />
-        </div>
-    }
-    @if (string.IsNullOrWhiteSpace(Model.Url) == false)
-    {
-        <a class="company-url" href="@Model.Url" target="_blank" title="@Model.Name  website"><i class="fas fa-link"></i> @Model.Url</a>
-    }
-    else
-    {
-        <p>No website provided.</p>
-    }
-    <p class="company-description">@Model.Description</p>
-    @if (@Model.JobsCount > 0)
-    {
-        <p><a asp-controller="Job" asp-action="Company" asp-route-id="@Model.Id" title="See all job offers">See all @Model.JobsCount job openings.</a></p>
-    }
-    else
-    {
-        <p>No job offers available right now.</p>
-    }
+    <img class="company-profile__logo" src="~/images/@Model.CompanyLogoFullPath" alt="@Model.Name logo" />
+
+    <div class="company-profile__info">
+        <h1 class="company-name">@Model.Name</h1>
+        @if (@Model.IsManager)
+        {
+            // Show manager options, like edit, remove etc...
+            <div class="company-options">
+                <partial name="Shared/Buttons/ButtonEditCompany" model="@Model" />
+                <partial name="Shared/Buttons/ButtonJobsCompany" model="@Model" />
+                @if (@Model.IsDisabled)
+                {
+                    <partial name="Shared/Buttons/ButtonEnableCompany" model="@Model" />
+                }
+                else
+                {
+                    <partial name="Shared/Buttons/ButtonDisableCompany" model="@Model" />
+                }
+                <partial name="Shared/Buttons/ButtonDeleteCompany" model="@Model" />
+            </div>
+        }
+        @if (string.IsNullOrWhiteSpace(Model.Url) == false)
+        {
+            <a class="company-profile__url" href="@Model.Url" target="_blank" title="@Model.Name  website"><i class="fas fa-link fas--space-right"></i> @Model.Url</a>
+        }
+        else
+        {
+            <p>No website provided.</p>
+        }
+        <p class="company-description">@Model.Description</p>
+        @if (@Model.JobsCount > 0)
+        {
+            <p><a asp-controller="Job" asp-action="Company" asp-route-id="@Model.Id" title="See all job offers">See all @Model.JobsCount job openings.</a></p>
+        }
+        else
+        {
+            <p><i class="fas fa-suitcase fas--space-right"></i> job offers available right now.</p>
+        }
+    </div>
+
 </div>
 

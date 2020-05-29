@@ -1,4 +1,6 @@
-﻿using Onebrb.MVC.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Onebrb.MVC.Models;
+using Onebrb.MVC.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +19,14 @@ namespace Onebrb.MVC.Areas.Manager.ViewModels.Company
         public string UserName { get; set; }
         public int JobsCount { get; set; }
         public bool IsManager { get; set; }
+        public string LogoFileName { get; set; }
+        public string CompanyLogoFullPath { get; set; }
+        public IFormFile ProfilePhoto { get; set; }
+
+        public ViewCompanyByIdViewModel()
+        {
+            LogoFileName = DefaultSettings.NoCompanyLogoFileName;
+            CompanyLogoFullPath = $"{DefaultSettings.CompanyLogosFolderName}/{LogoFileName}";
+        }
     }
 }

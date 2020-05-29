@@ -1,4 +1,4 @@
-﻿@model Onebrb.MVC.Areas.Manager.Models.Company
+﻿@model Onebrb.MVC.Areas.Manager.ViewModels.Company.CreateNewCompanyViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -6,7 +6,7 @@
 }
 
 <div class="col-lg-6">
-    <form asp-action="Create" method="post">
+    <form enctype="multipart/form-data"  asp-action="Create" method="post">
         <div class="form-group">
             <h2>Add new company</h2>
         </div>
@@ -32,8 +32,21 @@
             <textarea asp-for="Description" class="form-control"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> &nbsp; Add company</button>
-        <a asp-action="Index" class="btn btn-primary"><i class="fas fa-list"></i>&nbsp; All companies</a>
+        @*<div class="form-group">
+            <label asp-for="ProfileImage"></label>
+            <input type="file" asp-for="ProfileImage" class="form-control-file"/>
+            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+        </div>*@
+        <div class="form-group">
+            <label asp-for="CompanyLogoImage" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="CompanyLogoImage" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="CompanyLogoImage" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="fas fa-plus fas--space-right"></i> Add company</button>
+        <a asp-action="Index" class="btn btn-primary"><i class="fas fa-list fas--space-right"></i> All companies</a>
     </form>
 </div>
 

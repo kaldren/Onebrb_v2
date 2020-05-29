@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Areas.Manager.ViewModels.Company;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Utils;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
@@ -21,11 +24,13 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CompanyController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public CompanyController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -66,18 +71,46 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Company company)
+        public async Task<IActionResult> Create(CreateNewCompanyViewModel companyModel)
         {
             if (ModelState.IsValid)
             {
-                // Add company manager
-                var manager = await _userManager.GetUserAsync(HttpContext.User);
-                company.Manager = manager;
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+                string uniqueFileName = UploadedFile(companyModel);
+
+                Company company = new Company
+                {
+                    Manager = currentUser,
+                    Address = companyModel.Address,
+                    Description = companyModel.Description,
+                    Name = companyModel.Name,
+                    LogoFileName = uniqueFileName,
+                    Url = companyModel.Url
+                };
+
                 await _db.Companies.AddAsync(company);
                 await _db.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private string UploadedFile(CreateNewCompanyViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.CompanyLogoImage != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, $"{DefaultSettings.ImagesFolderName}/{DefaultSettings.CompanyLogosFolderName}");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CompanyLogoImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.CompanyLogoImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
 
         [HttpGet]
@@ -205,6 +238,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 Name = company.Name,
                 Url = company.Url,
                 UserName = company.Manager.UserName,
+                LogoFileName = company.LogoFileName,
+                CompanyLogoFullPath = $"{DefaultSettings.CompanyLogosFolderName}/{company.LogoFileName}",
                 IsManager = (currentUser != null && currentUser.UserName == company.Manager.UserName) ? true : false
             };
 
