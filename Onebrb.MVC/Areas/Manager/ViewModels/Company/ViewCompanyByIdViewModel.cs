@@ -22,11 +22,5 @@ namespace Onebrb.MVC.Areas.Manager.ViewModels.Company
         public string LogoFileName { get; set; }
         public string CompanyLogoFullPath { get; set; }
         public IFormFile ProfilePhoto { get; set; }
-
-        public ViewCompanyByIdViewModel()
-        {
-            LogoFileName = DefaultSettings.NoCompanyLogoFileName;
-            CompanyLogoFullPath = $"{DefaultSettings.CompanyLogosFolderName}/{LogoFileName}";
-        }
     }
 }

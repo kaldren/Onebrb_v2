@@ -239,7 +239,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 Url = company.Url,
                 UserName = company.Manager.UserName,
                 LogoFileName = company.LogoFileName,
-                CompanyLogoFullPath = $"{DefaultSettings.CompanyLogosFolderName}/{company.LogoFileName}",
+                CompanyLogoFullPath = $"{DefaultSettings.CompanyLogosFolderName}/{company.LogoFileName ?? DefaultSettings.NoCompanyLogoFileName}",
                 IsManager = (currentUser != null && currentUser.UserName == company.Manager.UserName) ? true : false
             };
 
