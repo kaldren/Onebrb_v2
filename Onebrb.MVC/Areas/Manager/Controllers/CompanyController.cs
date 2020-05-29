@@ -162,12 +162,19 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
             var company = await _db.Companies
                                 .Include(x => x.Jobs)
                                 .FirstOrDefaultAsync(x => x.Id == id);
 
             // Company doesn't exist
             if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Don't show the company if disabled for not logged in users
+            if (currentUser == null && company.IsDisabled)
             {
                 return RedirectToAction(nameof(Index));
             }
