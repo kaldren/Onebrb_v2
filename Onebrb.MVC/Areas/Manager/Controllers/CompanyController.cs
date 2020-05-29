@@ -33,9 +33,29 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             // Check if the user has any companies created
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            var companiesList = _db.Companies.Where(c => c.Manager == user).ToList();
+            var companiesList = _db.Companies
+                .Include(x => x.Jobs)
+                .Include(x =>x.Manager)
+                .Where(c => c.Manager == user).ToList();
 
-            return View(companiesList);
+            var companiesViewModel = new List<ViewCompanyByIdViewModel>();
+
+            for (int i = 0; i < companiesList.Count(); i++)
+            {
+                companiesViewModel.Add(new ViewCompanyByIdViewModel{
+                        Id = companiesList[i].Id,
+                        Address = companiesList[i].Address,
+                        Description = companiesList[i].Description,
+                        IsDisabled = companiesList[i].IsDisabled,
+                        JobsCount = companiesList[i].Jobs.Count(),
+                        Name = companiesList[i].Name,
+                        Url = companiesList[i].Url,
+                        UserName = companiesList[i].Manager.UserName,
+                        IsManager = true
+                });
+            }
+
+            return View(companiesViewModel);
         }
 
         [HttpGet]
