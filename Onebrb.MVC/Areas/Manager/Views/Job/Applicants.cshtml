@@ -17,6 +17,7 @@
                 <th scope="col">First name</th>
                 <th scope="col">Last name</th>
                 <th scope="col">Username</th>
+                <th scope="col">Status</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td>@Model[i].FirstName</td>
                 <td>@Model[i].LastName</td>
                 <td><a asp-controller="Profile" asp-action="View" asp-route-id="@Model[i].UserName">@Model[i].UserName</a></td>
+                <td>@Model[i].Status</td>
                 <td>
                     <a asp-controller="Profile" asp-action="View" asp-route-id="@Model[i].UserName" class="btn btn-primary" title="View profile"><i class="fas fa-user"></i></a>
                     &nbsp;

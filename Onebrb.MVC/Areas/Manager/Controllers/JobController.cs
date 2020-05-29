@@ -10,6 +10,7 @@ using Onebrb.MVC.Areas.Manager.Dtos.Job;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Utils;
 using shortid;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
@@ -100,10 +101,16 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                                     .Where(x => x.JobId == id && x.Company.Manager.Id == currentUser.Id)
                                     .FirstOrDefaultAsync();
 
+            
             if (applicants == null)
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            // Select only the active applications
+            var activeApplicants = new List<ApplicationUserJob>();
+            activeApplicants = applicants.ApplicationUserJob.Where(x => x.Status == DefaultSettings.JobApplication.Active).ToList();
+            applicants.ApplicationUserJob = activeApplicants;
 
             var dto = new List<JobApplicantsListDto>();
 
@@ -116,6 +123,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                     UserName = _userManager.Users.Single(x => x.Id == userId).UserName,
                     FirstName = _userManager.Users.Single(x => x.Id == userId).FirstName,
                     LastName = _userManager.Users.Single(x => x.Id == userId).LastName,
+                    Status = applicants.ApplicationUserJob.ElementAt(i).Status,
                     ApplicationId = applicants.ApplicationUserJob.ElementAt(i).ApplicationId
                 });
             }

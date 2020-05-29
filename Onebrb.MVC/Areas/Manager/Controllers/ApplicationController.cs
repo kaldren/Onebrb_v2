@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Onebrb.MVC.Areas.Manager.Dtos.Application;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Utils;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
@@ -85,6 +86,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                                     .Include(x => x.Job.Company)
                                     .ThenInclude(x => x.Manager)
                                     .FirstOrDefaultAsync(x => x.ApplicationId == id);
+
             var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == application.JobId);
 
             // This application doesn't exist
@@ -105,7 +107,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return BadRequest();
             }
 
-            _db.JobApplications.Remove(application);
+            // Cancel the application
+            application.Status = DefaultSettings.JobApplication.Cancelled;
+
+            _db.JobApplications.Update(application);
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Applicants", "Job", new { id = job.JobId });

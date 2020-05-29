@@ -15,6 +15,8 @@ namespace Onebrb.MVC.Utils
         public static class JobApplication
         {
             public const string Active = "Active";
+            public const string InProgress = "InProgress";
+            public const string Completed = "Completed";
             public const string Cancelled = "Cancelled";
         }
     }
