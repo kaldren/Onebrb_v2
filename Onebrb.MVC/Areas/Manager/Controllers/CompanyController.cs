@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -25,12 +26,16 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
 
-        public CompanyController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
+        public CompanyController(ApplicationDbContext db, 
+            UserManager<ApplicationUser> userManager, 
+            IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _db = db;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -96,7 +101,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private string UploadedFile(CreateNewCompanyViewModel model)
+        private string UploadedFile(dynamic model)
         {
             string uniqueFileName = null;
 
@@ -129,12 +134,14 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(company);
+            var viewModel = _mapper.Map<EditCompanyVM>(company);
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Company company)
+        public async Task<IActionResult> Edit(EditCompanyVM company)
         {
             if (company == null)
             {
@@ -146,6 +153,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            string uniqueFileName = UploadedFile(company);
+
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var dbCompany = await _db.Companies.FirstOrDefaultAsync(x => x.Id == company.Id && x.Manager == currentUser);
 
@@ -154,11 +163,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // TODO: Use Automapper
-            dbCompany.Name = company.Name;
-            dbCompany.Address = company.Address;
-            dbCompany.Url = company.Url;
-            dbCompany.Description = company.Description;
+            dbCompany = _mapper.Map(company, dbCompany);
 
             _db.Companies.Update(dbCompany);
             await _db.SaveChangesAsync();

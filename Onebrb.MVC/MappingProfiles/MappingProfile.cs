@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Onebrb.MVC.Areas.Manager.Models;
+using Onebrb.MVC.Areas.Manager.ViewModels.Company;
 using Onebrb.MVC.Areas.Manager.ViewModels.Job;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,9 @@ namespace Onebrb.MVC.MappingProfiles
         {
             CreateMap<Job, ViewAllJobsByCompanyVM>()
                 .ForMember(x => x.CompanyName, opt => opt.MapFrom(src => src.Company.Name));
+
+            CreateMap<EditCompanyVM, Company>()
+                .ReverseMap();
         }
     }
 }

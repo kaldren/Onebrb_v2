@@ -24,5 +24,9 @@ namespace Onebrb.MVC.Areas.Manager.Models
         public bool IsDisabled { get; set; }
         public virtual ApplicationUser Manager { get; set; }
         public ICollection<Job> Jobs { get; set; }
+        [NotMapped]
+        [Display(Name = "Company logo")]
+        public IFormFile CompanyLogoImage { get; set; }
+
     }
 }
