@@ -31,12 +31,12 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         public async Task<IActionResult> Index()
         {
             // Check if the user has any companies created
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
             var companiesList = _db.Companies
                 .Include(x => x.Jobs)
                 .Include(x =>x.Manager)
-                .Where(c => c.Manager == user).ToList();
+                .Where(c => c.Manager == currentUser).ToList();
 
             var companiesViewModel = new List<ViewCompanyByIdViewModel>();
 
@@ -51,7 +51,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                         Name = companiesList[i].Name,
                         Url = companiesList[i].Url,
                         UserName = companiesList[i].Manager.UserName,
-                        IsManager = true
+                        IsManager = (currentUser != null && currentUser.UserName == companiesList[i].Manager.UserName) ? true : false
                 });
             }
 
@@ -195,13 +195,6 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            bool isManagerViewing = false;
-
-            if (currentUser != null && currentUser.UserName == company.Manager.UserName)
-            {
-                isManagerViewing = true;
-            }
-
             var viewModel = new ViewCompanyByIdViewModel
             {
                 Id = company.Id,
@@ -212,7 +205,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 Name = company.Name,
                 Url = company.Url,
                 UserName = company.Manager.UserName,
-                IsManager = isManagerViewing
+                IsManager = (currentUser != null && currentUser.UserName == company.Manager.UserName) ? true : false
             };
 
             return View(viewModel);
