@@ -15,7 +15,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
     [Authorize(Roles = "Company")]
-    [Route("[controller]/[action]")]
+    [Route("[controller]/[action]/{id?}")]
     public class CompanyController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -59,7 +59,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -112,7 +112,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return RedirectToAction(nameof(Index));
         }
         
-        [HttpGet("{id:int}")]
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,7 +153,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <param name="id">Company id</param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet("{id:int}")]
+        [HttpGet]
         public async Task<IActionResult> View(int? id)
         {
             if (id == null)
@@ -181,7 +181,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(company);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet]
         public async Task<IActionResult> Disable(int? id)
         {
             if (id == null)
@@ -200,7 +200,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             return View(company);
         }
 
-        [HttpPost("{id:int}")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Disable(int id)
         {

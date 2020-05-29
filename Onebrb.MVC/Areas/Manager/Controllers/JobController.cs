@@ -26,7 +26,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("[Controller]")]
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
@@ -178,7 +178,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         }
         
         /// <summary>
-        /// Only employee type usersare allowed to apply for jobs
+        /// Only employee type user allowed to apply for jobs
         /// </summary>
         /// <param name="id">Job id</param>
         /// <returns></returns>

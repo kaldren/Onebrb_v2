@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Onebrb.MVC.Dtos.Application;
+using Onebrb.MVC.Areas.Manager.Dtos.Application;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
 
-namespace Onebrb.MVC.Controllers
+namespace Onebrb.MVC.Areas.Manager.Controllers
 {
+    [Area("Manager")]
     public class ApplicationController : Controller
     {
         private readonly ApplicationDbContext _db;
