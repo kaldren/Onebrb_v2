@@ -40,7 +40,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var application = await _db.AllApplications
+            var application = await _db.JobApplications
                                     .Include(x => x.ApplicationUser)
                                     .Include(x => x.Job)
                                     .ThenInclude(x => x.Company)
@@ -81,7 +81,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         public async Task<IActionResult> DeleteApplication(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var application = await _db.AllApplications
+            var application = await _db.JobApplications
                                     .Include(x => x.Job.Company)
                                     .ThenInclude(x => x.Manager)
                                     .FirstOrDefaultAsync(x => x.ApplicationId == id);
@@ -105,7 +105,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return BadRequest();
             }
 
-            _db.AllApplications.Remove(application);
+            _db.JobApplications.Remove(application);
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Applicants", "Job", new { id = job.JobId });

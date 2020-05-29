@@ -40,7 +40,6 @@ namespace Onebrb.MVC.Data
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
-        public DbSet<Application> Applications { get; set; }
-        public DbSet<ApplicationUserJob> AllApplications { get; set; }
+        public DbSet<ApplicationUserJob> JobApplications { get; set; }
     }
 }
