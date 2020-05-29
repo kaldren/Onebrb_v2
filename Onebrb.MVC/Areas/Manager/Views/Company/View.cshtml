@@ -39,7 +39,7 @@
         }
         @if (string.IsNullOrWhiteSpace(Model.Url) == false)
         {
-            <a class="company-profile__url" href="@Model.Url" target="_blank" title="@Model.Name  website"><i class="fas fa-link fas--space-right"></i> @Model.Url</a>
+            <a class="company-profile__url" href="//@Model.Url" target="_blank" title="@Model.Name website"><i class="fas fa-link fas--space-right"></i> @Model.Url</a>
         }
         else
         {

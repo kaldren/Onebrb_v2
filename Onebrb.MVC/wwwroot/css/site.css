@@ -91,7 +91,7 @@ body {
     margin: 20px;
 }
 .company-profile__url {
-    display: block;
+    display: inline-block;
     margin: 10px 0;
 }
 /*#endregion -- Company*/
