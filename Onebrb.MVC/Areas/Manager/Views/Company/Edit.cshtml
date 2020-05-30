@@ -36,7 +36,7 @@
         <div class="form-group">
             <label asp-for="CompanyLogoImage" class="control-label"></label>
             <div class="custom-file">
-                <input asp-for="CompanyLogoImage" class="custom-file-input" id="customFile">
+                <input asp-for="CompanyLogoImage" class="company-logo-input" id="customFile">
                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
             <span asp-validation-for="CompanyLogoImage" class="text-danger"></span>
@@ -50,7 +50,7 @@
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
         // Add the following code if you want the name of the file appear on select
-        $(".custom-file-input").on("change", function () {
+        $(".company-logo-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });

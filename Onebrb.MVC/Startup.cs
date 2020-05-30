@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Onebrb.MVC.Models;
 using AutoMapper;
+using Onebrb.MVC.Settings;
 
 namespace Onebrb.MVC
 {
@@ -42,6 +43,10 @@ namespace Onebrb.MVC
             services.AddHttpContextAccessor();
 
             services.AddAutoMapper(typeof(Startup));
+
+            // Options
+            services.Configure<CompanyLogoOptions>
+                (Configuration.GetSection($"AppSettings:{CompanyLogoOptions.CompanyLogoSettings}"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

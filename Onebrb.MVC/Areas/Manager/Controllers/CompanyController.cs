@@ -9,12 +9,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Onebrb.MVC.Areas.Manager.Dtos.Company;
+using Microsoft.Extensions.Options;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Areas.Manager.ViewModels.Company;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Settings;
 using Onebrb.MVC.Utils;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
@@ -24,15 +27,18 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     public class CompanyController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IOptions<CompanyLogoOptions> _companyLogoOptions;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
 
-        public CompanyController(ApplicationDbContext db, 
+        public CompanyController(ApplicationDbContext db,
+            IOptions<CompanyLogoOptions> companyLogoOptions,
             UserManager<ApplicationUser> userManager, 
             IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _db = db;
+            _companyLogoOptions = companyLogoOptions;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
             _mapper = mapper;
@@ -107,13 +113,18 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             if (model.CompanyLogoImage != null)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, $"{DefaultSettings.ImagesFolderName}/{DefaultSettings.CompanyLogosFolderName}");
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, _companyLogoOptions.Value.CompanyLogosFolderPath);
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CompanyLogoImage.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     model.CompanyLogoImage.CopyTo(fileStream);
                 }
+
+                var image = Image.Load(filePath);
+                image.Mutate(x => x.Resize(_companyLogoOptions.Value.ImageWidth, _companyLogoOptions.Value.ImageHeight));
+                image.Save(filePath);
             }
             return uniqueFileName;
         }

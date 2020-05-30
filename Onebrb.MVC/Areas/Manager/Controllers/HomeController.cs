@@ -35,7 +35,6 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         [HttpPost]
         public IActionResult Create()
         {
-            throw new Exception();
             return View();
         }
     }
