@@ -20,7 +20,7 @@ namespace Onebrb.MVC.Areas.Manager.Models
         [Required]
         public string Description { get; set; }
         [Display(Name="Company logo")]
-        public string LogoFileName { get; set; }
+        public string LogoPath { get; set; }
         public bool IsDisabled { get; set; }
         public virtual ApplicationUser Manager { get; set; }
         public ICollection<Job> Jobs { get; set; }

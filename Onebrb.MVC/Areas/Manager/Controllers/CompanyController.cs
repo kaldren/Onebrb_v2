@@ -27,13 +27,13 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     public class CompanyController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private readonly IOptions<CompanyLogoOptions> _companyLogoOptions;
+        private readonly IOptions<CompanyOptions> _companyLogoOptions;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
 
         public CompanyController(ApplicationDbContext db,
-            IOptions<CompanyLogoOptions> companyLogoOptions,
+            IOptions<CompanyOptions> companyLogoOptions,
             UserManager<ApplicationUser> userManager, 
             IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
@@ -96,7 +96,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                     Address = companyModel.Address,
                     Description = companyModel.Description,
                     Name = companyModel.Name,
-                    LogoFileName = uniqueFileName,
+                    LogoPath = Path.Combine(_companyLogoOptions.Value.CompanyLogoFolderPath, uniqueFileName),
                     Url = companyModel.Url
                 };
 
@@ -113,7 +113,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             if (model.CompanyLogoImage != null)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, _companyLogoOptions.Value.CompanyLogosFolderPath);
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, _companyLogoOptions.Value.CompanyLogoFolderPath);
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CompanyLogoImage.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
@@ -123,7 +123,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 }
 
                 var image = Image.Load(filePath);
-                image.Mutate(x => x.Resize(_companyLogoOptions.Value.ImageWidth, _companyLogoOptions.Value.ImageHeight));
+                image.Mutate(x => x.Resize(_companyLogoOptions.Value.LogoImageWidth, _companyLogoOptions.Value.LogoImageHeight));
                 image.Save(filePath);
             }
             return uniqueFileName;
@@ -175,7 +175,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             dbCompany = _mapper.Map(company, dbCompany);
-            dbCompany.LogoFileName = uniqueFileName;
+            dbCompany.LogoPath = Path.Combine(_companyLogoOptions.Value.CompanyLogoFolderPath, uniqueFileName);
 
             _db.Companies.Update(dbCompany);
             await _db.SaveChangesAsync();
@@ -255,8 +255,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 Name = company.Name,
                 Url = company.Url,
                 UserName = company.Manager.UserName,
-                LogoFileName = company.LogoFileName,
-                CompanyLogoFullPath = $"{DefaultSettings.CompanyLogosFolderName}/{company.LogoFileName ?? DefaultSettings.NoCompanyLogoFileName}",
+                LogoPath = company.LogoPath ?? Path.Combine(_companyLogoOptions.Value.CompanyLogoFolderPath, _companyLogoOptions.Value.NoCompanyLogoFileName),
                 IsManager = (currentUser != null && currentUser.UserName == company.Manager.UserName) ? true : false
             };
 

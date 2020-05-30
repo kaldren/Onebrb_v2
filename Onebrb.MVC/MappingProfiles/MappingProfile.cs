@@ -18,7 +18,7 @@ namespace Onebrb.MVC.MappingProfiles
 
             CreateMap<Job, ViewSingleJobVM>()
                 .ForMember(x => x.CompanyName, opt => opt.MapFrom(src => src.Company.Name))
-                .ForMember(x => x.CompanyLogoFullPath, opt => opt.MapFrom(src => src.Company.LogoFileName));
+                .ForMember(x => x.CompanyLogoFullPath, opt => opt.MapFrom(src => src.Company.LogoPath));
 
             CreateMap<EditCompanyVM, Company>()
                 .ReverseMap();

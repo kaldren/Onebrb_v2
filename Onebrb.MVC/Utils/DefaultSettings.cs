@@ -9,7 +9,7 @@ namespace Onebrb.MVC.Utils
     {
         // Images
         public const string ImagesFolderName = "images";
-        public const string CompanyLogosFolderName = "company-logos";
+        public const string CompanyLogoFolderName = "company-logos";
         public const string NoCompanyLogoFileName = "no_logo.png";
 
         public static class JobApplication

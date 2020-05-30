@@ -45,8 +45,8 @@ namespace Onebrb.MVC
             services.AddAutoMapper(typeof(Startup));
 
             // Options
-            services.Configure<CompanyLogoOptions>
-                (Configuration.GetSection($"AppSettings:{CompanyLogoOptions.CompanyLogoSettings}"));
+            services.Configure<CompanyOptions>
+                (Configuration.GetSection($"AppSettings:{CompanyOptions.CompanySettings}"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

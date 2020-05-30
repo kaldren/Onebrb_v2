@@ -11,8 +11,6 @@ namespace Onebrb.MVC.Areas.Manager.ViewModels.Job
 {
     public class ViewSingleJobVM
     {
-        private readonly IOptions<CompanyLogoOptions> _companyLogoOptions;
-
         public string JobId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
