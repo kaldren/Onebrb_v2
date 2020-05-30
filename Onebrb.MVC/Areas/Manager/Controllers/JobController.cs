@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
     [Route("[controller]/[action]/{id?}")]
+    [Authorize]
     public class JobController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -49,6 +51,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// 
         [HttpGet]
         [ActionName("Company")]
+        [AllowAnonymous]
         public async Task<IActionResult> ViewAllJobs(int id)
         {
             var jobs = await _db.Jobs
@@ -73,8 +76,11 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         /// <returns>The job offer</returns>
         [HttpGet]
         [ActionName("View")]
+        [AllowAnonymous]
         public async Task<IActionResult> ViewSingleJob(string id)
         {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
             var job = await _db.Jobs
                             .Include(x => x.Company)
                             .ThenInclude(x => x.Manager)
@@ -86,7 +92,18 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View("ViewOneJob", job);
+            var viewModel = _mapper.Map<ViewSingleJobVM>(job);
+
+            viewModel.IsManager = (currentUser != null && currentUser.UserName == job.Company.Manager.UserName) ? true : false;
+            var hasApplied = job.ApplicationUserJob
+                                .FirstOrDefault(x => x.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (hasApplied != null)
+            {
+                viewModel.AlreadyApplied = true;
+            } 
+
+            return View("ViewSingleJob", viewModel);
         }
 
         /// <summary>
@@ -138,11 +155,12 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         }
 
         /// <summary>
-        /// Create job post page
+        /// Create job post page. Only companies can open it.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> Create(int id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);

@@ -1,0 +1,53 @@
+﻿@using Onebrb.MVC.Areas.Manager.Models;
+@using System.Security.Claims;
+@using Onebrb.MVC.Areas.Manager.ViewModels.Job;
+@model ViewSingleJobVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Apply" asp-route-id="@Model.JobId" method="post">
+    <div class="job-offer card">
+        <img class="job-offer__logo" src="@Model.CompanyLogoFullPath" alt="@Model.CompanyName logo" />
+
+        <div class="job-offer__details">
+            <h5 class="card-header">
+                <a asp-action="View" asp-route-id="@Model.CompanyId" title="@Model.CompanyName">@Model.CompanyName</a>
+            </h5>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Model.Title
+                </h5>
+                <p class="card-text">
+                    @Model.Description
+                </p>
+                @if (@Context.User.Identity.IsAuthenticated == false)
+                {
+                    <p>Log in to apply.</p>
+                }
+                else if (@Context.User.IsInRole("Company"))
+                {
+                    // Show various options to the manager of the posting
+                    if (@Model.IsManager)
+                    {
+                        <a asp-action="Applicants" asp-route-id="@Model.JobId">See all applicants</a>
+                    }
+                }
+                else if (@Context.User.IsInRole("Employee"))
+                {
+                    // This user already applied for this job
+                    if (Model.AlreadyApplied)
+                    {
+                        <p>You already applied for this position.</p>
+                    }
+                    else
+                    {
+                        <partial name="Shared/Buttons/ButtonApplyForJob" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</form>
