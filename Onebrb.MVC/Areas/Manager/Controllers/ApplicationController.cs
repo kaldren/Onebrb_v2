@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Onebrb.MVC.Areas.Manager.Dtos.Application;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
-using Onebrb.MVC.Utils;
+using Onebrb.MVC.Settings;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
@@ -18,11 +19,15 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly JobOptions _jobOptions;
 
-        public ApplicationController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public ApplicationController(ApplicationDbContext db, 
+            UserManager<ApplicationUser> userManager,
+            IOptions<JobOptions> jobOptions)
         {
             _db = db;
             _userManager = userManager;
+            _jobOptions = jobOptions.Value;
         }
 
         public IActionResult Index()
@@ -108,9 +113,9 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             // Cancel the application
-            application.Status = DefaultSettings.JobApplication.Cancelled;
+            application.Status = _jobOptions.JobStatus.Active;
 
-            _db.JobApplications.Update(application);
+            //_db.JobApplications.Update(application);
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Applicants", "Job", new { id = job.JobId });

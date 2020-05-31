@@ -49,6 +49,8 @@ namespace Onebrb.MVC
                 (Configuration.GetSection($"AppSettings:{CompanyOptions.CompanySettings}"));
             services.Configure<GeneralOptions>
                 (Configuration.GetSection($"AppSettings:{GeneralOptions.GeneralSettings}"));
+            services.Configure<JobOptions>
+                (Configuration.GetSection($"AppSettings:{JobOptions.JobSettings}"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

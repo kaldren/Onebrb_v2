@@ -16,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Onebrb.MVC.Models;
 using Onebrb.MVC.Settings;
-using Onebrb.MVC.Utils;
 
 namespace Onebrb.MVC.Areas.Identity.Pages.Account
 {
@@ -28,7 +27,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IOptions<GeneralOptions> _generalOptions;
+        private readonly GeneralOptions _generalOptions;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -42,7 +41,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _generalOptions = generalOptions;
+            _generalOptions = generalOptions.Value;
             _roleManager = roleManager;
         }
 
@@ -102,7 +101,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
                 var accountType = Request.Form["rblAccountType"].ToString();
 
                 // Return to the form page if the account type is invalid
-                if (!_generalOptions.Value.Roles.Contains(accountType))
+                if (!_generalOptions.Roles.Contains(accountType))
                 {
                     return Page();
                 }
@@ -112,11 +111,11 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     // Initialize the roles
-                    foreach (KeyValuePair<string, string> roles in RoleTypes.AllRoles)
+                    foreach (var role in _generalOptions.Roles)
                     {
-                        if (!await _roleManager.RoleExistsAsync(roles.Key))
+                        if (!await _roleManager.RoleExistsAsync(role))
                         {
-                            await _roleManager.CreateAsync(new IdentityRole(roles.Value));
+                            await _roleManager.CreateAsync(new IdentityRole(role));
                         }
                     }
 

@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Onebrb.MVC.Areas.Manager.Dtos.Job;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Areas.Manager.ViewModels.Job;
 using Onebrb.MVC.Data;
 using Onebrb.MVC.Models;
-using Onebrb.MVC.Utils;
+using Onebrb.MVC.Settings;
 using shortid;
 
 namespace Onebrb.MVC.Areas.Manager.Controllers
@@ -26,12 +27,17 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly JobOptions _jobOptions;
 
-        public JobController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public JobController(ApplicationDbContext db, 
+            UserManager<ApplicationUser> userManager, 
+            IMapper mapper,
+            IOptions<JobOptions> jobOptions)
         {
             _db = db;
             _userManager = userManager;
             _mapper = mapper;
+            _jobOptions = jobOptions.Value;
         }
         /// <summary>
         /// Main page
@@ -132,7 +138,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             // Select only the active applications
             var activeApplicants = new List<ApplicationUserJob>();
-            activeApplicants = applicants.ApplicationUserJob.Where(x => x.Status == DefaultSettings.JobApplication.Active).ToList();
+            activeApplicants = applicants.ApplicationUserJob.Where(x => x.Status == _jobOptions.JobStatus.Active).ToList();
             applicants.ApplicationUserJob = activeApplicants;
 
             var dto = new List<JobApplicantsListDto>();
@@ -237,7 +243,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var userAlreadyApplied = job.ApplicationUserJob.FirstOrDefault(x => x.ApplicationUser == currentUser);
+            var userAlreadyApplied = job.ApplicationUserJob
+                                        .FirstOrDefault(x => x.ApplicationUser == currentUser);
 
             // This user already applied for this job
             if (userAlreadyApplied != null)
@@ -251,7 +258,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 ApplicationUserId = currentUser.Id,
                 Job = job,
                 JobId = job.JobId,
-                ApplicationId = ShortId.Generate()
+                ApplicationId = ShortId.Generate(),
+                Status = _jobOptions.JobStatus.Active
             });
 
             job.Applications++;

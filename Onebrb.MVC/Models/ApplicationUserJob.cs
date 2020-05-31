@@ -1,5 +1,4 @@
 ﻿using Onebrb.MVC.Areas.Manager.Models;
-using Onebrb.MVC.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +14,5 @@ namespace Onebrb.MVC.Models
         public ApplicationUser ApplicationUser { get; set; }
         public string ApplicationId { get; set; }
         public string Status { get; set; }
-
-        // By default every new job application is active
-        public ApplicationUserJob()
-        {
-            Status = DefaultSettings.JobApplication.Active;
-        }
     }
 }

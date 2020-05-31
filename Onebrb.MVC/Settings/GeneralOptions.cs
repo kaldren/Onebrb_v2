@@ -9,5 +9,6 @@ namespace Onebrb.MVC.Settings
     {
         public const string GeneralSettings = "GeneralSettings";
         public List<string> Roles { get; set; }
+        public string ImagesFolder { get; set; }
     }
 }
