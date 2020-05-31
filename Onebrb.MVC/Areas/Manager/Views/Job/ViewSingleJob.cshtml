@@ -23,7 +23,7 @@
                 <p class="card-text">
                     @Model.Description
                 </p>
-                @if (@Context.User.Identity.IsAuthenticated == false)
+                @if (!@Context.User.Identity.IsAuthenticated)
                 {
                     <p>Log in to apply.</p>
                 }

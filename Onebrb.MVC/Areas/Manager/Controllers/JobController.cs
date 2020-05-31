@@ -186,7 +186,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm]Job job, [FromRoute] int id)
         {
-            if (ModelState.IsValid == false)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
             }

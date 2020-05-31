@@ -34,7 +34,7 @@
     }
 </ul>
 
-@if (SignInManager.IsSignedIn(User) == false)
+@if (!SignInManager.IsSignedIn(User))
 {
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">

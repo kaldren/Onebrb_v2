@@ -159,7 +159,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (ModelState.IsValid == false)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -286,7 +286,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         public async Task<IActionResult> Disable(int id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var company = await _db.Companies.FirstOrDefaultAsync(x => x.Id == id && x.IsDisabled == false && x.Manager == currentUser);
+            var company = await _db.Companies
+                                .FirstOrDefaultAsync(x => x.Id == id && !x.IsDisabled && x.Manager == currentUser);
 
             if (company == null)
             {

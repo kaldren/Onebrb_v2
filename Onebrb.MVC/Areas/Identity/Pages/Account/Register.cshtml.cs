@@ -13,7 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Onebrb.MVC.Models;
+using Onebrb.MVC.Settings;
 using Onebrb.MVC.Utils;
 
 namespace Onebrb.MVC.Areas.Identity.Pages.Account
@@ -26,18 +28,21 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IOptions<GeneralOptions> _generalOptions;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IOptions<GeneralOptions> generalOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _generalOptions = generalOptions;
             _roleManager = roleManager;
         }
 
@@ -97,7 +102,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
                 var accountType = Request.Form["rblAccountType"].ToString();
 
                 // Return to the form page if the account type is invalid
-                if (RoleTypes.AllRoles.ContainsKey(accountType) == false)
+                if (!_generalOptions.Value.Roles.Contains(accountType))
                 {
                     return Page();
                 }
