@@ -45,12 +45,12 @@ namespace Onebrb.MVC
             services.AddAutoMapper(typeof(Startup));
 
             // Options
-            services.Configure<CompanyOptions>
-                (Configuration.GetSection($"AppSettings:{CompanyOptions.CompanySettings}"));
-            services.Configure<GeneralOptions>
-                (Configuration.GetSection($"AppSettings:{GeneralOptions.GeneralSettings}"));
-            services.Configure<JobOptions>
-                (Configuration.GetSection($"AppSettings:{JobOptions.JobSettings}"));
+            services.Configure<CompanySettings>
+                (Configuration.GetSection($"AppSettings:{CompanySettings.Settings}"));
+            services.Configure<GeneralSettings>
+                (Configuration.GetSection($"AppSettings:{GeneralSettings.Settings}"));
+            services.Configure<JobSettings>
+                (Configuration.GetSection($"AppSettings:{JobSettings.Settings}"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

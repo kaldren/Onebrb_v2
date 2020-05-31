@@ -27,7 +27,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly GeneralOptions _generalOptions;
+        private readonly GeneralSettings _generalSettings;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -35,13 +35,13 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
             RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IOptions<GeneralOptions> generalOptions)
+            IOptions<GeneralSettings> generalSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _generalOptions = generalOptions.Value;
+            _generalSettings = generalSettings.Value;
             _roleManager = roleManager;
         }
 
@@ -101,7 +101,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
                 var accountType = Request.Form["rblAccountType"].ToString();
 
                 // Return to the form page if the account type is invalid
-                if (!_generalOptions.Roles.Contains(accountType))
+                if (!_generalSettings.Roles.Contains(accountType))
                 {
                     return Page();
                 }
@@ -111,7 +111,7 @@ namespace Onebrb.MVC.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     // Initialize the roles
-                    foreach (var role in _generalOptions.Roles)
+                    foreach (var role in _generalSettings.Roles)
                     {
                         if (!await _roleManager.RoleExistsAsync(role))
                         {

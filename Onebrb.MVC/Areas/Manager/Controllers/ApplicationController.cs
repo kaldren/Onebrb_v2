@@ -19,15 +19,15 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JobOptions _jobOptions;
+        private readonly JobSettings _jobSettings;
 
         public ApplicationController(ApplicationDbContext db, 
             UserManager<ApplicationUser> userManager,
-            IOptions<JobOptions> jobOptions)
+            IOptions<JobSettings> jobSettings)
         {
             _db = db;
             _userManager = userManager;
-            _jobOptions = jobOptions.Value;
+            _jobSettings = jobSettings.Value;
         }
 
         public IActionResult Index()
@@ -113,7 +113,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             // Cancel the application
-            application.Status = _jobOptions.ApplicationStatus.Active;
+            application.Status = _jobSettings.ApplicationStatus.Active;
 
             //_db.JobApplications.Update(application);
             await _db.SaveChangesAsync();

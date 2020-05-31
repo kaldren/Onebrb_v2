@@ -27,18 +27,18 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly JobOptions _jobOptions;
+        private readonly JobSettings _jobSettings;
 
 
         public JobController(ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
             IMapper mapper,
-            IOptions<JobOptions> jobOptions)
+            IOptions<JobSettings> jobSettings)
         {
             _db = db;
             _userManager = userManager;
             _mapper = mapper;
-            _jobOptions = jobOptions.Value;
+            _jobSettings = jobSettings.Value;
         }
         /// <summary>
         /// Main page
@@ -149,7 +149,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             // Select only the active applications
             var activeApplicants = new List<ApplicationUserJob>();
-            activeApplicants = applicants.ApplicationUserJob.Where(x => x.Status == _jobOptions.ApplicationStatus.Active).ToList();
+            activeApplicants = applicants.ApplicationUserJob.Where(x => x.Status == _jobSettings.ApplicationStatus.Active).ToList();
             applicants.ApplicationUserJob = activeApplicants;
 
             var dto = new List<JobApplicantsListDto>();
@@ -270,7 +270,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 Job = job,
                 JobId = job.JobId,
                 ApplicationId = ShortId.Generate(),
-                Status = _jobOptions.ApplicationStatus.Active
+                Status = _jobSettings.ApplicationStatus.Active
             });
 
             job.Applications++;

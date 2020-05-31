@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Onebrb.MVC.Settings
 {
-    public class CompanyOptions
+    public class CompanySettings
     {
-        public const string CompanySettings = "CompanySettings";
+        public const string Settings = "CompanySettings";
         public string LogosFolder { get; set; }
         public string NoCompanyLogoFileName { get; set; }
         public int LogoImageWidth { get; set; }

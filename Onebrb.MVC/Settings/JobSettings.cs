@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Onebrb.MVC.Settings
 {
-    public class JobOptions
+    public class JobSettings
     {
-        public const string JobSettings = "JobSettings";
+        public const string Settings = "JobSettings";
         public ApplicationStatus ApplicationStatus { get; set; }
     }
     public class ApplicationStatus

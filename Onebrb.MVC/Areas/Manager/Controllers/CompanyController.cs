@@ -26,21 +26,21 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
     public class CompanyController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private readonly GeneralOptions _generalOptions;
-        private readonly CompanyOptions _companyLogoOptions;
+        private readonly GeneralSettings _generalSettings;
+        private readonly CompanySettings _companySettings;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
 
         public CompanyController(ApplicationDbContext db,
-            IOptions<CompanyOptions> companyLogoOptions,
-            IOptions<GeneralOptions> generalOptions,
+            IOptions<CompanySettings> companySettings,
+            IOptions<GeneralSettings> generalSettings,
             UserManager<ApplicationUser> userManager, 
             IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _db = db;
-            _generalOptions = generalOptions.Value;
-            _companyLogoOptions = companyLogoOptions.Value;
+            _generalSettings = generalSettings.Value;
+            _companySettings = companySettings.Value;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
             _mapper = mapper;
@@ -98,7 +98,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                     Address = companyModel.Address,
                     Description = companyModel.Description,
                     Name = companyModel.Name,
-                    LogoPath = Path.Combine(_generalOptions.ImagesFolder, _companyLogoOptions.LogosFolder, uniqueFileName),
+                    LogoPath = Path.Combine(_generalSettings.ImagesFolder, _companySettings.LogosFolder, uniqueFileName),
                     Url = companyModel.Url
                 };
 
@@ -116,7 +116,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             if (model.CompanyLogoImage != null)
             {
                 string companyLogosFolder = Path.Combine(_webHostEnvironment.WebRootPath,
-                                                _generalOptions.ImagesFolder, _companyLogoOptions.LogosFolder);
+                                                _generalSettings.ImagesFolder, _companySettings.LogosFolder);
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CompanyLogoImage.FileName;
 
                 string filePath = Path.Combine(companyLogosFolder, uniqueFileName);
@@ -127,7 +127,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 }
 
                 var image = Image.Load(filePath);
-                image.Mutate(x => x.Resize(_companyLogoOptions.LogoImageWidth, _companyLogoOptions.LogoImageHeight));
+                image.Mutate(x => x.Resize(_companySettings.LogoImageWidth, _companySettings.LogoImageHeight));
                 image.Save(filePath);
             }
             return uniqueFileName;
@@ -179,7 +179,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             dbCompany = _mapper.Map(company, dbCompany);
-            dbCompany.LogoPath = Path.Combine(_generalOptions.ImagesFolder, _companyLogoOptions.LogosFolder, uniqueFileName);
+            dbCompany.LogoPath = Path.Combine(_generalSettings.ImagesFolder, _companySettings.LogosFolder, uniqueFileName);
 
             _db.Companies.Update(dbCompany);
             await _db.SaveChangesAsync();
@@ -259,7 +259,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 Name = company.Name,
                 Url = company.Url,
                 UserName = company.Manager.UserName,
-                LogoPath = company.LogoPath ?? Path.Combine(_generalOptions.ImagesFolder, _companyLogoOptions.LogosFolder, _companyLogoOptions.NoCompanyLogoFileName),
+                LogoPath = company.LogoPath ?? Path.Combine(_generalSettings.ImagesFolder, _companySettings.LogosFolder, _companySettings.NoCompanyLogoFileName),
                 IsManager = (currentUser != null && currentUser.UserName == company.Manager.UserName) ? true : false
             };
 
