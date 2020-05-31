@@ -280,5 +280,22 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == id && x.Company.Manager == currentUser);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<EditJobOfferVM>(job);
+
+            return View(viewModel);
+        }
     }
 }

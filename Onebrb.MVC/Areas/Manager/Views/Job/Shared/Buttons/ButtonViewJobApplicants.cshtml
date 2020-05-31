@@ -1,0 +1,4 @@
+﻿@using Onebrb.MVC.Areas.Manager.ViewModels.Job;
+@model ViewAllJobsByCompanyVM
+
+<button class="btn btn-primary" title="View applicants" asp-controller="Job" asp-action="View" asp-route-id="@Model.JobId"><i class="fas fa-users"></i></button>

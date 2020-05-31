@@ -23,6 +23,9 @@ namespace Onebrb.MVC.MappingProfiles
 
             CreateMap<EditCompanyVM, Company>()
                 .ReverseMap();
+
+            CreateMap<EditJobOfferVM, Job>()
+                .ReverseMap();
         }
     }
 }

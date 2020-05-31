@@ -1,0 +1,4 @@
+﻿@using Onebrb.MVC.Areas.Manager.ViewModels.Job;
+@model ViewAllJobsByCompanyVM
+
+<button class="btn btn-danger" title="Delete offer" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.JobId"><i class="fas fa-trash-alt"></i></button>
