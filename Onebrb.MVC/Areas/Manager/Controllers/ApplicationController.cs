@@ -113,7 +113,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             // Cancel the application
-            application.Status = _jobOptions.JobStatus.Active;
+            application.Status = _jobOptions.ApplicationStatus.Active;
 
             //_db.JobApplications.Update(application);
             await _db.SaveChangesAsync();

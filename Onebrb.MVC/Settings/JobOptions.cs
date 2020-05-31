@@ -8,7 +8,7 @@ namespace Onebrb.MVC.Settings
     public class JobOptions
     {
         public const string JobSettings = "JobSettings";
-        public ApplicationStatus JobStatus { get; set; }
+        public ApplicationStatus ApplicationStatus { get; set; }
     }
     public class ApplicationStatus
     {
