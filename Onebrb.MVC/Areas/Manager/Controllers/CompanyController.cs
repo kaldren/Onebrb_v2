@@ -158,11 +158,6 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditCompanyVM company)
         {
-            if (company == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
             if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
@@ -179,7 +174,10 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             dbCompany = _mapper.Map(company, dbCompany);
-            dbCompany.LogoPath = Path.Combine(_generalSettings.ImagesFolder, _companySettings.LogosFolder, uniqueFileName);
+            if (uniqueFileName != null)
+            {
+                dbCompany.LogoPath = Path.Combine(_generalSettings.ImagesFolder, _companySettings.LogosFolder, uniqueFileName);
+            }
 
             _db.Companies.Update(dbCompany);
             await _db.SaveChangesAsync();
