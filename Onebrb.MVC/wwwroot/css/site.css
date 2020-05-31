@@ -74,8 +74,12 @@ body {
     display: inline-block;
 }
 .fas--space-right {
-    margin: 0px 10px 0px 0px;
+    margin: 0px 8px 0px 0px;
 }
+
+/*#region -- Bootstrap overwrites*/
+.navbar-light .navbar-nav .nav-link {cursor: pointer;}
+/*#endregion -- Bootstrap overwrites*/
 /*#region -- Company*/
 .company-profile {
     display: flex;
@@ -97,5 +101,14 @@ body {
 /*#endregion -- Company*/
 
 /*#region -- Job*/
-.job-offer 
+.job-offer {
+    flex-direction: row;
+    align-items: center;
+    border: none;
+}
+.job-offer__logo {
+    margin: 0 20px;
+}
+.job-offer__details {flex: 2}
+.job-offer__details .card-header {background: none;}
 /*#endregion -- Job*/

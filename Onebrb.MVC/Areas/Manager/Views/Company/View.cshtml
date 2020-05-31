@@ -12,7 +12,7 @@
 
     @if (@Model.IsDisabled && !@Model.IsManager)
     {
-        <h2 class="alert-danger text-center text-black-50 p-2"><i class="fas fa-frown fas--space-right"></i> Sorry, this company is currently disabled.</h2>
+        <h2 class="alert-danger text-center text-black-50 p-2"><i class="fas fa-frown fas--space-right"></i>Sorry, this company is currently disabled.</h2>
         return;
     }
 
@@ -39,7 +39,7 @@
         }
         @if (!string.IsNullOrWhiteSpace(Model.Url))
         {
-            <a class="company-profile__url" href="//@Model.Url" target="_blank" title="@Model.Name website"><i class="fas fa-link fas--space-right"></i> @Model.Url</a>
+            <a class="company-profile__url" href="//@Model.Url" target="_blank" title="@Model.Name website"><i class="fas fa-link fas--space-right"></i>@Model.Url</a>
         }
         else
         {
@@ -52,7 +52,7 @@
         }
         else
         {
-            <p><i class="fas fa-suitcase fas--space-right"></i> job offers available right now.</p>
+            <p><i class="fas fa-suitcase fas--space-right"></i>job offers available right now.</p>
         }
     </div>
 

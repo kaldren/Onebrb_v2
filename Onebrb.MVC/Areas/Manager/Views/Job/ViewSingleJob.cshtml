@@ -10,7 +10,7 @@
 
 <form asp-action="Apply" asp-route-id="@Model.JobId" method="post">
     <div class="job-offer card">
-        <img class="job-offer__logo" src="@Model.CompanyLogoFullPath" alt="@Model.CompanyName logo" />
+        <img class="job-offer__logo" src="~/@Model.CompanyLogoFullPath" alt="@Model.CompanyName logo" />
 
         <div class="job-offer__details">
             <h5 class="card-header">
@@ -25,7 +25,7 @@
                 </p>
                 @if (!@Context.User.Identity.IsAuthenticated)
                 {
-                    <p>Log in to apply.</p>
+                    <a asp-area="Identity" asp-controller="Account" asp-action="Login" class="btn btn-primary"><i class="fas fa-key fas--space-right"></i>Log in to apply</a>
                 }
                 else if (@Context.User.IsInRole("Company"))
                 {
