@@ -14,6 +14,7 @@ namespace Onebrb.MVC.MappingProfiles
         public MappingProfile()
         {
             CreateMap<Job, ViewAllJobsByCompanyVM>()
+                .ForMember(x => x.ManagerUserName, opt => opt.MapFrom(src => src.Company.Manager.UserName))
                 .ForMember(x => x.CompanyName, opt => opt.MapFrom(src => src.Company.Name));
 
             CreateMap<Job, ViewSingleJobVM>()

@@ -15,6 +15,8 @@ namespace Onebrb.MVC.Areas.Manager.ViewModels.Job
         public DateTime DatePosted { get; set; }
         public bool IsDisabled { get; set; }
         public int CompanyId { get; set; }
+        public string ManagerUserName { get; set; }
+        public bool IsManager { get; set; }
         public string CompanyName { get; set; }
     }
 }

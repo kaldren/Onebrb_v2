@@ -7,10 +7,13 @@
 }
 
 <h2>@Model[0].CompanyName</h2>
-<hr/>
-<div class="form-group">
-    <partial name="Shared/Buttons/ButtonNewJobPost" />
-</div>
+<hr />
+@if (Model[0].IsManager)
+{
+    <div class="form-group">
+        <partial name="Shared/Buttons/ButtonNewJobPost" />
+    </div>
+}
 <p>All job postings</p>
 
 <table class="table table-striped">
@@ -26,7 +29,7 @@
         @for (int i = 0; i < @Model.Count; i++)
         {
             <tr>
-                <th scope="row">@(i+1)</th>
+                <th scope="row">@(i + 1)</th>
                 <td><a asp-action="View" asp-route-id="@Model[i].JobId" title="View this job">@Model[i].Title</a></td>
                 <td>@Model[i].Applications</td>
                 <td>@Model[i].DatePosted</td>

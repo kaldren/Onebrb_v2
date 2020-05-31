@@ -14,7 +14,7 @@
 
         <div class="job-offer__details">
             <h5 class="card-header">
-                <a asp-action="View" asp-route-id="@Model.CompanyId" title="@Model.CompanyName">@Model.CompanyName</a>
+                <i class="fas fa-building fas--space-right"></i><a asp-controller="Company" asp-action="View" asp-route-id="@Model.CompanyId" title="@Model.CompanyName">@Model.CompanyName</a>
             </h5>
             <div class="card-body">
                 <h5 class="card-title">

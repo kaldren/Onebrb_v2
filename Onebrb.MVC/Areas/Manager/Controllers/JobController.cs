@@ -29,8 +29,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         private readonly IMapper _mapper;
         private readonly JobOptions _jobOptions;
 
-        public JobController(ApplicationDbContext db, 
-            UserManager<ApplicationUser> userManager, 
+        public JobController(ApplicationDbContext db,
+            UserManager<ApplicationUser> userManager,
             IMapper mapper,
             IOptions<JobOptions> jobOptions)
         {
@@ -60,6 +60,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ViewAllJobs(int id)
         {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
             var jobs = await _db.Jobs
                                 .Where(x => x.CompanyId == id)
                                 .Include(x => x.Company)
@@ -71,6 +73,14 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             var viewModel = _mapper.Map<List<Job>, List<ViewAllJobsByCompanyVM>>(jobs);
+
+            if (currentUser != null && viewModel != null)
+            {
+                if (currentUser.UserName == viewModel[0].ManagerUserName)
+                {
+                    viewModel = viewModel.Select(x => { x.IsManager = true; return x; }).ToList();
+                }
+            }
 
             return View(viewModel);
         }
@@ -107,7 +117,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             if (hasApplied != null)
             {
                 viewModel.AlreadyApplied = true;
-            } 
+            }
 
             return View("ViewSingleJob", viewModel);
         }
@@ -130,7 +140,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                                     .Where(x => x.JobId == id && x.Company.Manager.Id == currentUser.Id)
                                     .FirstOrDefaultAsync();
 
-            
+
             if (applicants == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -216,7 +226,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return RedirectToAction(nameof(View), new { id });
         }
-        
+
         /// <summary>
         /// Only employee type user allowed to apply for jobs
         /// </summary>
