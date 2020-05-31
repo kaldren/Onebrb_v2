@@ -297,5 +297,25 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> Edit(EditJobOfferVM vm)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var job = await _db.Jobs.FirstOrDefaultAsync(x => x.JobId == vm.Id && x.Company.Manager == currentUser);
+
+            // This user is not the manager (creator) of the job
+            if (job == null)
+            {
+                return BadRequest();
+            }
+
+            job = _mapper.Map(vm,job);
+            _db.Update(job);
+            await _db.SaveChangesAsync();
+
+            return View(vm);
+        }
     }
 }
