@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Onebrb.MVC.Areas.Manager.Models;
 using Onebrb.MVC.Models;
 using Onebrb.MVC.Areas.Manager.Models.Application;
+using Onebrb.MVC.Areas.Message.Models;
 
 namespace Onebrb.MVC.Data
 {
@@ -41,5 +42,6 @@ namespace Onebrb.MVC.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<ApplicationUserJob> JobApplications { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

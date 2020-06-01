@@ -1,0 +1,32 @@
+﻿@model Onebrb.MVC.Areas.Message.ViewModels.Message.CreateMessageVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-6">
+    <form asp-action="Create" method="post">
+        <h3>Messaging @Model.Recipient</h3>
+
+        <input type="hidden" asp-for="@Model.Recipient" />
+        <div class="form-group">
+            <label asp-for="@Model.Title">Title</label>
+            <input asp-for="@Model.Title" type="text" class="form-control">
+            <span asp-validation-for="@Model.Title" class="text-danger"></span>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Text">Message</label>
+            <textarea asp-for="@Model.Text" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="@Model.Text" class="text-danger"></span>
+        </div>
+        <button class="btn btn-success"><i class="fas fa-paper-plane fas--space-right"></i>Send</button>
+        <a asp-area="Message" asp-controller="Message" asp-action="Index" class="btn btn-secondary"><i class="fas fa-window-close fas--space-right"></i>Cancel</a>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

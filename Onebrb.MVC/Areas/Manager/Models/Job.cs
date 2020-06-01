@@ -15,7 +15,7 @@ namespace Onebrb.MVC.Areas.Manager.Models
         [Required]
         public string Description { get; set; }
         public int Applications { get; set; }
-        public DateTime DatePosted { get; set; }
+        public DateTime DatePosted { get; set; } = DateTime.UtcNow;
         public bool IsDisabled { get; set; }
         public int CompanyId { get; set; }
         public Company Company { get; set; }

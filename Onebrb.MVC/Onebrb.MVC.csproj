@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Manager\Data\" />
+    <Folder Include="Areas\Message\Data\" />
     <Folder Include="Areas\Profile\Data\" />
     <Folder Include="Areas\Profile\Models\" />
     <Folder Include="wwwroot\images\company-logos\" />

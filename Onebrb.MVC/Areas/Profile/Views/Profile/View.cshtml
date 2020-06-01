@@ -8,4 +8,5 @@
 
 <h1>@Model.UserName</h1>
 <p>@Model.FirstName @Model.LastName</p>
+<a asp-area="Message" asp-controller="Message" asp-action="Create" asp-route-id="@Model.UserName" class="btn btn-primary"><i class="fas fa-envelope fas--space-right"></i> Send message</a>
 

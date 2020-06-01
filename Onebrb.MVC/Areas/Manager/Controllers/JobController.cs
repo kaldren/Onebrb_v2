@@ -219,7 +219,6 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            job.DatePosted = DateTime.UtcNow;
             job.Company = company;
 
             await _db.Jobs.AddAsync(job);
