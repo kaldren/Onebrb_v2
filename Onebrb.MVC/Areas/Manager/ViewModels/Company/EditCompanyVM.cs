@@ -10,9 +10,12 @@ namespace Onebrb.MVC.Areas.Manager.ViewModels.Company
     public class EditCompanyVM
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Address { get; set; }
         public string Url { get; set; }
+        [Required]
         public string Description { get; set; }
         public bool IsDisabled { get; set; }
         [Display(Name = "Company logo")]

@@ -16,7 +16,7 @@ using Onebrb.MVC.Models;
 namespace Onebrb.MVC.Areas.Message.Controllers
 {
     [Area("Message")]
-    [Route("[controller]/[action]/{id?}")]
+    [Route("[controller]/{action=Index}/{id?}")]
     [Authorize]
     public class MessageController : Controller
     {

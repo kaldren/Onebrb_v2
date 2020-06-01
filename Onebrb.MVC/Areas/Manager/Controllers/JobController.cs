@@ -20,7 +20,7 @@ using shortid;
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    [Route("[controller]/[action]/{id?}")]
+    [Route("[controller]/{action=Index}/{id?}")]
     [Authorize]
     public class JobController : Controller
     {

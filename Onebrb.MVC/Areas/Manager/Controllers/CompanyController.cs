@@ -22,7 +22,7 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
     [Authorize(Roles = "Company")]
-    [Route("[controller]/[action]/{id?}")]
+    [Route("[controller]/{action=Index}/{id?}")]
     public class CompanyController : Controller
     {
         private readonly ApplicationDbContext _db;

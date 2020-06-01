@@ -15,7 +15,7 @@ using Onebrb.MVC.Settings;
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    [Route("[controller]/[action]/{id?}")]
+    [Route("[controller]/{action=Index}/{id?}")]
     public class ApplicationController : Controller
     {
         private readonly ApplicationDbContext _db;
