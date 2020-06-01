@@ -12,7 +12,7 @@ using Onebrb.MVC.Models;
 namespace Onebrb.MVC.Areas.Profile.Controllers
 {
     [Area("Profile")]
-    [Route("[controller]/[action]")]
+    [Route("[controller]/[action]/{id?}")]
     public class ProfileController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -29,10 +29,11 @@ namespace Onebrb.MVC.Areas.Profile.Controllers
             return View();
         }
 
-        [HttpGet("{username:minlength(2)}")]
-        public new async Task<IActionResult> View(string username)
+        [HttpGet]
+        [ActionName("View")]
+        public async Task<IActionResult> ViewProfile(string id)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == id);
 
             if (user == null)
             {

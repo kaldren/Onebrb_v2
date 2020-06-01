@@ -15,6 +15,7 @@ using Onebrb.MVC.Settings;
 namespace Onebrb.MVC.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Route("[controller]/[action]/{id?}")]
     public class ApplicationController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -113,9 +114,8 @@ namespace Onebrb.MVC.Areas.Manager.Controllers
             }
 
             // Cancel the application
-            application.Status = _jobSettings.ApplicationStatus.Active;
-
-            //_db.JobApplications.Update(application);
+            application.Status = _jobSettings.ApplicationStatus.Cancelled;
+            _db.JobApplications.Update(application);
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Applicants", "Job", new { id = job.JobId });
