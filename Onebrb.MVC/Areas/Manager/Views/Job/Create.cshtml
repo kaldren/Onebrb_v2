@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if  (@Model.Company.Jobs == null || @Model.Company.Jobs.Count == 0)
+@if (@Model.Company.Jobs == null || @Model.Company.Jobs.Count == 0)
 {
     <div class="alert alert-info" role="alert">
         @Model.Company.Name doesn't have any jobs posted.
@@ -18,7 +18,6 @@
         <div class="form-group">
             <h2>New job for @Model.Company.Name</h2>
         </div>
-        <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="form-group">
             <label asp-for="Title"></label>
@@ -34,3 +33,8 @@
         <a asp-action="Index" class="btn btn-primary"><i class="fas fa-list fas--space-right"></i>All jobs</a>
     </form>
 </div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
