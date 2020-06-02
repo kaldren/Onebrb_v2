@@ -1,12 +1,24 @@
 ﻿@using Onebrb.MVC.Settings;
 @using Microsoft.Extensions.Options;
+@using Onebrb.MVC.Areas.Search.ViewModels;
+@model SearchVM
 @inject IOptions<GeneralSettings> _generalSettings;
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">@_generalSettings.Value.SiteName</h1>
-    <p>@_generalSettings.Value.SiteSlogan</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">@_generalSettings.Value.SiteName</h1>
+        <p>@_generalSettings.Value.SiteSlogan</p>
+
+
+        <div class="col-lg-6 offset-lg-3">
+            <form asp-area="Search" asp-controller="Search" asp-action="Phrase" method="get">
+                <div class="form-group">
+                    <input asp-for="@Model.Text" class="form-control" placeholder="Search for a job..." />
+                </div>
+                <button type="submit" class="btn btn-success"><i class="fas fa-search fas--space-right"></i>Search</button>
+            </form>
+        </div>
+    </div>

@@ -1,1 +1,20 @@
-﻿Search
+﻿@using Onebrb.MVC.Areas.Search.ViewModels;
+@model SearchVM
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Search</h3>
+
+<div class="col-lg-6">
+    <form asp-action="Phrase" method="get">
+        <div class="form-group">
+            <label asp-for="@Model.Text"></label>
+            <input asp-for="@Model.Text" class="form-control" />
+            <span asp-validation-for="@Model.Text" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="fas fa-search fas--space-right"></i>Search</button>
+    </form>
+</div>

@@ -4,6 +4,7 @@ using Onebrb.MVC.Areas.Manager.ViewModels.Company;
 using Onebrb.MVC.Areas.Manager.ViewModels.Job;
 using Onebrb.MVC.Areas.Message.Models;
 using Onebrb.MVC.Areas.Message.ViewModels.Message;
+using Onebrb.MVC.Areas.Search.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,10 @@ namespace Onebrb.MVC.MappingProfiles
                 .ReverseMap();
 
             CreateMap<ViewMessageVM, Message>()
+                .ReverseMap();
+
+            CreateMap<Job, SearchResultsVM>()
+                .ForMember(x => x.CompanyName, opt => opt.MapFrom(src => src.Company.Name))
                 .ReverseMap();
         }
     }

@@ -1,0 +1,42 @@
+﻿@using Onebrb.MVC.Areas.Search.ViewModels;
+@model List<SearchResultsVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a class="btn btn-primary" href="/" title="Go back to search"><i class="fas fa-angle-double-left fas--space-right"></i> Go back to search</a>
+
+@if (@Model != null && Model.Count > 0)
+{
+    <h3>@Model.Count results </h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Job Description</th>
+                <th scope="col">Company</th>
+                <th scope="col">Posted</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@(i+1)</th>
+                    <td><a asp-area="Manager" asp-controller="Job" asp-action="View" asp-route-id="@Model[i].JobId">@Model[i].Title</a></td>
+                    <td>@Model[i].Description</td>
+                    <td>@Model[i].CompanyName</td>
+                    <td>@Model[i].DatePosted</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>No results found.</h2>
+}
